@@ -1,0 +1,3077 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>影之軍團 ‧ WLAN CH03 複習殿堂</title>
+<style>
+:root {
+  --bg-deep: #05030d;
+  --bg-dark: #0d0a1f;
+  --bg-panel: #13102b;
+  --bg-card: #1a1440;
+  --purple-glow: #8b5cf6;
+  --purple-deep: #6d28d9;
+  --violet-bright: #a855f7;
+  --electric-blue: #4f46e5;
+  --shadow-cyan: #22d3ee;
+  --text-light: #e9e4ff;
+  --text-muted: #8b85a8;
+  --gold: #fbbf24;
+  --danger: #ef4444;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  background: var(--bg-deep);
+  color: var(--text-light);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* 背景影之軍團粒子效果 */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(79, 70, 229, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(168, 85, 247, 0.08) 0%, transparent 70%);
+  z-index: -2;
+  animation: bgPulse 8s ease-in-out infinite alternate;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+@keyframes bgPulse {
+  0% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+/* 頂部標題 */
+header {
+  padding: 3rem 2rem 2rem;
+  text-align: center;
+  position: relative;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.3);
+  background:
+    linear-gradient(180deg, rgba(13, 10, 31, 0.9) 0%, transparent 100%);
+}
+
+.title-main {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  background: linear-gradient(135deg, #e9e4ff 0%, #a855f7 40%, #22d3ee 80%, #e9e4ff 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 5s ease-in-out infinite;
+  text-shadow: 0 0 40px rgba(168, 85, 247, 0.5);
+  margin-bottom: 0.5rem;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.title-sub {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  letter-spacing: 0.3em;
+  margin-bottom: 1rem;
+}
+
+.title-quote {
+  font-style: italic;
+  color: var(--violet-bright);
+  font-size: 0.95rem;
+  text-shadow: 0 0 10px var(--violet-bright);
+  letter-spacing: 0.1em;
+}
+
+/* 導覽列 */
+nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1.5rem 1rem;
+  background: rgba(5, 3, 13, 0.8);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.nav-btn {
+  padding: 0.6rem 1.2rem;
+  background: transparent;
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  color: var(--text-light);
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s;
+  font-family: inherit;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--purple-glow), var(--electric-blue));
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: -1;
+}
+
+.nav-btn:hover::before,
+.nav-btn.active::before {
+  opacity: 1;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+  border-color: var(--violet-bright);
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+  transform: translateY(-2px);
+}
+
+/* 主要內容 */
+main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.section {
+  display: none;
+  animation: fadeIn 0.5s ease;
+}
+
+.section.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section-title {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--purple-glow);
+  display: inline-block;
+  letter-spacing: 0.1em;
+}
+
+.section-title::before {
+  content: '◆ ';
+  color: var(--violet-bright);
+  text-shadow: 0 0 10px var(--violet-bright);
+}
+
+/* ===== 首頁 ===== */
+.hero-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.hero-card {
+  background: linear-gradient(135deg, var(--bg-panel) 0%, var(--bg-card) 100%);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  padding: 2rem 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.4s;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, var(--purple-glow), var(--shadow-cyan), var(--electric-blue));
+  border-radius: 8px;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s;
+}
+
+.hero-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 40px rgba(139, 92, 246, 0.5);
+}
+
+.hero-card:hover::before {
+  opacity: 1;
+}
+
+.hero-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+  filter: drop-shadow(0 0 10px var(--violet-bright));
+}
+
+.hero-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.6rem;
+  color: var(--violet-bright);
+  letter-spacing: 0.1em;
+}
+
+.hero-card p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.intro-text {
+  background: var(--bg-panel);
+  border-left: 3px solid var(--violet-bright);
+  padding: 1.5rem;
+  border-radius: 4px;
+  margin: 1.5rem 0;
+  line-height: 1.8;
+}
+
+.intro-text strong {
+  color: var(--shadow-cyan);
+  text-shadow: 0 0 8px var(--shadow-cyan);
+}
+
+/* ===== 名詞解釋卡片 ===== */
+.flashcard-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.progress-bar {
+  flex: 1;
+  min-width: 200px;
+  height: 6px;
+  background: var(--bg-panel);
+  border-radius: 3px;
+  overflow: hidden;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--electric-blue), var(--violet-bright), var(--shadow-cyan));
+  background-size: 200% 100%;
+  width: 0%;
+  transition: width 0.4s;
+  animation: progressGlow 3s linear infinite;
+}
+
+@keyframes progressGlow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.flashcard-container {
+  perspective: 1500px;
+  margin: 2rem auto;
+  max-width: 700px;
+}
+
+.flashcard {
+  position: relative;
+  width: 100%;
+  min-height: 360px;
+  transform-style: preserve-3d;
+  transition: transform 0.7s;
+  cursor: pointer;
+}
+
+.flashcard.flipped {
+  transform: rotateY(180deg);
+}
+
+.flashcard-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  background: linear-gradient(135deg, var(--bg-panel) 0%, var(--bg-card) 100%);
+  border: 2px solid var(--purple-glow);
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-shadow:
+    0 0 40px rgba(139, 92, 246, 0.4),
+    inset 0 0 30px rgba(139, 92, 246, 0.1);
+}
+
+.flashcard-face.back {
+  transform: rotateY(180deg);
+  border-color: var(--shadow-cyan);
+  box-shadow:
+    0 0 40px rgba(34, 211, 238, 0.4),
+    inset 0 0 30px rgba(34, 211, 238, 0.1);
+}
+
+.card-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.3rem 0.8rem;
+  background: rgba(139, 92, 246, 0.2);
+  border: 1px solid var(--purple-glow);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+
+.card-term-cn {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-light);
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+}
+
+.card-abbr {
+  font-size: 2.5rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--violet-bright), var(--shadow-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+
+.card-english {
+  font-size: 1.2rem;
+  color: var(--shadow-cyan);
+  margin-bottom: 0.6rem;
+  font-style: italic;
+  letter-spacing: 0.05em;
+}
+
+.card-chinese {
+  font-size: 1.3rem;
+  color: var(--violet-bright);
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.card-definition {
+  font-size: 1rem;
+  color: var(--text-light);
+  line-height: 1.8;
+  max-width: 90%;
+}
+
+.card-hint {
+  position: absolute;
+  bottom: 1rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  letter-spacing: 0.2em;
+  opacity: 0.6;
+}
+
+.flashcard-nav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn {
+  padding: 0.7rem 1.5rem;
+  background: transparent;
+  border: 1px solid var(--purple-glow);
+  color: var(--text-light);
+  cursor: pointer;
+  font-size: 0.95rem;
+  border-radius: 4px;
+  transition: all 0.3s;
+  font-family: inherit;
+  letter-spacing: 0.1em;
+}
+
+.btn:hover {
+  background: var(--purple-glow);
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--purple-deep), var(--electric-blue));
+  border-color: var(--violet-bright);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 0 30px rgba(168, 85, 247, 0.8);
+}
+
+.counter {
+  font-size: 1rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  padding: 0.5rem 1rem;
+  background: var(--bg-panel);
+  border-radius: 4px;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.counter .current {
+  color: var(--shadow-cyan);
+  font-weight: 700;
+  text-shadow: 0 0 8px var(--shadow-cyan);
+}
+
+/* 分類過濾器 */
+.filter-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.filter-btn {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  background: transparent;
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  color: var(--text-muted);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: inherit;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+  background: rgba(139, 92, 246, 0.2);
+  border-color: var(--violet-bright);
+  color: var(--text-light);
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+}
+
+/* ===== 概念 + 題目 ===== */
+.concept-block {
+  background: var(--bg-panel);
+  border-left: 4px solid var(--violet-bright);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.15);
+  transition: all 0.3s;
+}
+
+.concept-block:hover {
+  border-left-color: var(--shadow-cyan);
+  box-shadow: 0 4px 30px rgba(34, 211, 238, 0.2);
+}
+
+.concept-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.concept-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, var(--purple-deep), var(--electric-blue));
+  border-radius: 50%;
+  font-weight: 700;
+  color: white;
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
+  flex-shrink: 0;
+}
+
+.concept-title {
+  font-size: 1.3rem;
+  color: var(--violet-bright);
+  letter-spacing: 0.05em;
+}
+
+.concept-content {
+  line-height: 1.8;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+
+.concept-content ul,
+.concept-content ol {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+.concept-content li {
+  margin-bottom: 0.4rem;
+}
+
+.concept-content strong {
+  color: var(--shadow-cyan);
+}
+
+.concept-content code,
+.concept-content .code {
+  background: rgba(34, 211, 238, 0.1);
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  color: var(--shadow-cyan);
+  font-family: 'Consolas', monospace;
+  font-size: 0.9rem;
+  border: 1px solid rgba(34, 211, 238, 0.3);
+}
+
+.concept-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+.concept-table th,
+.concept-table td {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  text-align: left;
+}
+
+.concept-table th {
+  background: rgba(139, 92, 246, 0.2);
+  color: var(--violet-bright);
+  font-weight: 600;
+}
+
+.concept-table tr:nth-child(even) td {
+  background: rgba(13, 10, 31, 0.5);
+}
+
+.concept-table tr:hover td {
+  background: rgba(139, 92, 246, 0.1);
+}
+
+/* 題目區 */
+.question-block {
+  background: rgba(5, 3, 13, 0.7);
+  border: 1px solid rgba(34, 211, 238, 0.3);
+  border-radius: 6px;
+  padding: 1.2rem;
+  margin-top: 1rem;
+  position: relative;
+}
+
+.question-block::before {
+  content: '⚔ 試煉';
+  position: absolute;
+  top: -10px;
+  left: 1rem;
+  background: var(--bg-deep);
+  padding: 0 0.8rem;
+  font-size: 0.8rem;
+  color: var(--shadow-cyan);
+  letter-spacing: 0.2em;
+}
+
+.question-text {
+  margin-bottom: 0.8rem;
+  font-weight: 500;
+  color: var(--text-light);
+}
+
+.question-options {
+  display: grid;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.option {
+  padding: 0.6rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.25s;
+  font-family: inherit;
+  text-align: left;
+  color: var(--text-light);
+  font-size: 0.95rem;
+}
+
+.option:hover {
+  border-color: var(--violet-bright);
+  background: rgba(139, 92, 246, 0.15);
+  transform: translateX(4px);
+}
+
+.option.correct {
+  background: rgba(34, 197, 94, 0.2);
+  border-color: #22c55e;
+  color: #86efac;
+  box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
+}
+
+.option.wrong {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: var(--danger);
+  color: #fca5a5;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+}
+
+.option:disabled {
+  cursor: default;
+}
+
+.explain {
+  margin-top: 0.8rem;
+  padding: 0.8rem;
+  background: rgba(34, 211, 238, 0.08);
+  border-left: 3px solid var(--shadow-cyan);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: var(--text-light);
+  line-height: 1.6;
+  display: none;
+}
+
+.explain.show {
+  display: block;
+  animation: fadeIn 0.4s ease;
+}
+
+.explain strong {
+  color: var(--gold);
+}
+
+/* 歷史標記 */
+.q-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 20px;
+  margin-left: 0.5rem;
+  letter-spacing: 0.1em;
+  border: 1px solid;
+  vertical-align: middle;
+}
+.q-badge.correct {
+  color: #86efac;
+  border-color: #22c55e;
+  background: rgba(34,197,94,0.12);
+}
+.q-badge.wrong {
+  color: #fca5a5;
+  border-color: var(--danger);
+  background: rgba(239,68,68,0.12);
+}
+.retry-btn {
+  margin-top: 0.6rem;
+  font-size: 0.8rem !important;
+  padding: 0.35rem 0.8rem !important;
+}
+
+/* 歷史紀錄 */
+.history-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.7rem 0.8rem;
+  border-bottom: 1px solid rgba(139,92,246,0.2);
+  font-size: 0.9rem;
+}
+.history-item:last-child { border-bottom: none; }
+.history-date { color: var(--text-muted); }
+.history-score { color: var(--shadow-cyan); font-weight: 600; }
+.history-rank {
+  font-weight: 900;
+  padding: 0.15rem 0.7rem;
+  border-radius: 15px;
+  border: 1px solid;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+}
+
+/* 檢視切換 */
+.view-toggle {
+  display: flex;
+  gap: 0;
+  background: var(--bg-panel);
+  border: 1px solid rgba(139,92,246,0.4);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+.view-toggle button {
+  flex: 1;
+  padding: 0.6rem 1.2rem;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.9rem;
+  letter-spacing: 0.1em;
+  transition: all 0.3s;
+}
+.view-toggle button.active {
+  background: linear-gradient(135deg, var(--purple-deep), var(--electric-blue));
+  color: white;
+  box-shadow: inset 0 0 15px rgba(168,85,247,0.3);
+}
+
+/* 列表模式 */
+.term-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.term-item {
+  background: linear-gradient(135deg, var(--bg-panel), var(--bg-card));
+  border: 1px solid rgba(139,92,246,0.3);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  transition: all 0.3s;
+  position: relative;
+  cursor: pointer;
+}
+.term-item:hover {
+  border-color: var(--violet-bright);
+  box-shadow: 0 4px 20px rgba(168,85,247,0.3);
+  transform: translateY(-2px);
+}
+.term-item .ti-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.term-item .ti-abbr {
+  font-size: 1.1rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--violet-bright), var(--shadow-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.05em;
+}
+.term-item .ti-cat {
+  font-size: 0.7rem;
+  padding: 0.15rem 0.5rem;
+  background: rgba(139,92,246,0.2);
+  border: 1px solid var(--purple-glow);
+  border-radius: 10px;
+  color: var(--text-light);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+.term-item .ti-en {
+  color: var(--shadow-cyan);
+  font-style: italic;
+  font-size: 0.85rem;
+  margin-bottom: 0.2rem;
+}
+.term-item .ti-cn {
+  color: var(--violet-bright);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+.term-item .ti-def {
+  color: var(--text-light);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.search-box {
+  padding: 0.5rem 1rem;
+  background: var(--bg-panel);
+  border: 1px solid rgba(139,92,246,0.4);
+  border-radius: 20px;
+  color: var(--text-light);
+  font-family: inherit;
+  font-size: 0.9rem;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 1rem;
+  outline: none;
+  transition: all 0.3s;
+}
+.search-box:focus {
+  border-color: var(--violet-bright);
+  box-shadow: 0 0 15px rgba(168,85,247,0.4);
+}
+
+/* 知識講解框 */
+.lesson-intro {
+  background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(34,211,238,0.05));
+  border: 1px solid rgba(168,85,247,0.3);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+  line-height: 1.8;
+}
+.lesson-intro .intro-label {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--shadow-cyan);
+  letter-spacing: 0.2em;
+  margin-bottom: 0.4rem;
+  border-bottom: 1px solid var(--shadow-cyan);
+  padding-bottom: 0.1rem;
+}
+.key-points {
+  background: rgba(5,3,13,0.5);
+  border-left: 3px solid var(--gold);
+  padding: 0.8rem 1rem;
+  margin: 1rem 0;
+  border-radius: 4px;
+}
+.key-points h4 {
+  color: var(--gold);
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 0.5rem;
+}
+.key-points ul {
+  margin: 0;
+  padding-left: 1.3rem;
+}
+.key-points li {
+  color: var(--text-light);
+  margin-bottom: 0.3rem;
+  font-size: 0.95rem;
+}
+
+/* SVG 示意圖 */
+.diagram {
+  background: rgba(5,3,13,0.6);
+  border: 1px solid rgba(139,92,246,0.3);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  text-align: center;
+}
+.diagram svg {
+  max-width: 100%;
+  height: auto;
+}
+.diagram-caption {
+  margin-top: 0.5rem;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.pill {
+  display: inline-block;
+  padding: 0.2rem 0.7rem;
+  background: rgba(34,211,238,0.12);
+  border: 1px solid var(--shadow-cyan);
+  border-radius: 15px;
+  color: var(--shadow-cyan);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  margin: 0.15rem;
+}
+.pill.purple {
+  background: rgba(168,85,247,0.12);
+  border-color: var(--violet-bright);
+  color: var(--violet-bright);
+}
+.pill.gold {
+  background: rgba(251,191,36,0.12);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* 恢復提示 */
+.restore-toast {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--violet-bright);
+  border-radius: 6px;
+  padding: 0.8rem 1.2rem;
+  box-shadow: 0 0 20px rgba(168,85,247,0.4);
+  z-index: 1000;
+  font-size: 0.9rem;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: all 0.4s;
+  pointer-events: none;
+}
+.restore-toast.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ===== 測驗模式 ===== */
+.quiz-start {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.quiz-panel {
+  background: var(--bg-panel);
+  border: 2px solid var(--purple-glow);
+  border-radius: 12px;
+  padding: 2.5rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  box-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
+}
+
+.quiz-question-num {
+  color: var(--shadow-cyan);
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 1rem;
+}
+
+.quiz-question {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+}
+
+.quiz-score-display {
+  font-size: 3rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, var(--violet-bright), var(--shadow-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 1rem 0;
+}
+
+.rank-badge {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 900;
+  font-size: 1.3rem;
+  letter-spacing: 0.3em;
+  margin: 1rem 0;
+  border: 2px solid;
+}
+
+.rank-S { color: #fde047; border-color: #fde047; background: rgba(253, 224, 71, 0.1); box-shadow: 0 0 30px rgba(253, 224, 71, 0.5); }
+.rank-A { color: var(--violet-bright); border-color: var(--violet-bright); background: rgba(168, 85, 247, 0.1); box-shadow: 0 0 25px rgba(168, 85, 247, 0.5); }
+.rank-B { color: var(--shadow-cyan); border-color: var(--shadow-cyan); background: rgba(34, 211, 238, 0.1); box-shadow: 0 0 20px rgba(34, 211, 238, 0.4); }
+.rank-C { color: var(--text-light); border-color: var(--text-muted); background: rgba(139, 133, 168, 0.1); }
+.rank-E { color: var(--danger); border-color: var(--danger); background: rgba(239, 68, 68, 0.1); }
+
+/* ===== 概念地圖 ===== */
+.map-wrapper {
+  position: relative;
+  overflow: auto;
+  background:
+    radial-gradient(circle at center, rgba(139, 92, 246, 0.1) 0%, transparent 70%),
+    var(--bg-panel);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+svg.concept-map {
+  width: 100%;
+  min-width: 900px;
+  height: 700px;
+  display: block;
+}
+
+.map-node {
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.map-node:hover circle,
+.map-node:hover rect {
+  filter: drop-shadow(0 0 15px var(--violet-bright));
+}
+
+.node-info {
+  background: var(--bg-card);
+  border: 1px solid var(--purple-glow);
+  border-radius: 6px;
+  padding: 1rem;
+  margin-top: 1rem;
+  min-height: 80px;
+  display: none;
+}
+
+.node-info.show {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+.node-info h4 {
+  color: var(--violet-bright);
+  margin-bottom: 0.5rem;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  border-top: 1px solid rgba(139, 92, 246, 0.2);
+  margin-top: 3rem;
+}
+
+/* 手機適配 */
+@media (max-width: 640px) {
+  .title-main { font-size: 1.8rem; }
+  .nav-btn { padding: 0.5rem 0.9rem; font-size: 0.8rem; }
+  .card-term-cn { font-size: 1.5rem; }
+  .card-abbr { font-size: 2rem; }
+  .flashcard { min-height: 320px; }
+  main { padding: 1.5rem 1rem 3rem; }
+}
+
+/* 閃電/影子裝飾 */
+.shadow-decoration {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+/* 小圖示 */
+.checkmark { color: #22c55e; }
+.cross { color: var(--danger); }
+
+/* 動畫：召喚出現 */
+@keyframes summon {
+  0% { opacity: 0; transform: scale(0.8) translateY(20px); filter: blur(10px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+}
+
+.summon-in {
+  animation: summon 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1 class="title-main">影之軍團 ‧ 複習殿堂</h1>
+  <div class="title-sub">WLAN CH03 ─ 802.11 訊框格式與連結上網</div>
+  <div class="title-quote">「起來吧，我的影子兵團。」</div>
+</header>
+
+<nav>
+  <button class="nav-btn active" data-section="home">◆ 召喚之間</button>
+  <button class="nav-btn" data-section="terms">◆ 影之典籍</button>
+  <button class="nav-btn" data-section="concepts">◆ 核心修煉</button>
+  <button class="nav-btn" data-section="quiz">◆ 影子試煉</button>
+  <button class="nav-btn" data-section="map">◆ 靈脈圖</button>
+</nav>
+
+<main>
+
+<!-- HOME -->
+<section class="section active" id="home">
+  <h2 class="section-title">召喚之間</h2>
+  <div class="intro-text">
+    <p>歡迎來到 <strong>影之軍團複習殿堂</strong>，獵人。</p>
+    <p style="margin-top:0.8rem">這裡收錄了 <strong>WLAN CH03 ─ 802.11 訊框格式與連結上網</strong> 的所有知識碎片。每一個名詞、每一個概念、每一場試煉，都將化為你影之軍團中的一員。考試當天，牠們將為你而戰。</p>
+    <p style="margin-top:0.8rem">選擇你要進入的殿堂：</p>
+  </div>
+
+  <div class="hero-grid">
+    <div class="hero-card" onclick="showSection('terms')">
+      <span class="hero-icon">📜</span>
+      <h3>影之典籍</h3>
+      <p>名詞解釋閃卡<br>英文全稱 + 中文 + 定義<br>共 40+ 核心術語</p>
+    </div>
+    <div class="hero-card" onclick="showSection('concepts')">
+      <span class="hero-icon">⚔</span>
+      <h3>核心修煉</h3>
+      <p>概念講解 + 即時試煉<br>每個概念附帶挑戰題<br>邊學邊驗證</p>
+    </div>
+    <div class="hero-card" onclick="showSection('quiz')">
+      <span class="hero-icon">🗡</span>
+      <h3>影子試煉</h3>
+      <p>隨機綜合測驗<br>模擬考試情境<br>獲取你的獵人階級</p>
+    </div>
+    <div class="hero-card" onclick="showSection('map')">
+      <span class="hero-icon">🌌</span>
+      <h3>靈脈圖</h3>
+      <p>概念地圖視覺化<br>理解知識間的脈絡<br>點擊節點查看詳細</p>
+    </div>
+  </div>
+
+  <div class="intro-text" style="margin-top:2rem">
+    <strong>考前提醒：</strong>
+    <ul style="margin-top:0.5rem; padding-left:1.5rem; line-height:2">
+      <li>老師喜歡考名詞解釋 → 務必走完「影之典籍」</li>
+      <li>應用題靠概念 → 「核心修煉」每題都要搞懂</li>
+      <li>搞不清關聯 → 打開「靈脈圖」</li>
+      <li>最後模擬考 → 到「影子試煉」驗收</li>
+    </ul>
+  </div>
+</section>
+
+<!-- TERMS placeholder -->
+<section class="section" id="terms">
+  <h2 class="section-title">影之典籍 ─ 名詞解釋</h2>
+  <div class="intro-text" style="margin-bottom:1.5rem">
+    卡片模式：逐張翻面背誦，左右鍵切換、空白鍵翻面。<br>
+    列表模式：一次看完全部，方便快速複習或 Ctrl+F 搜尋。<br>
+    <span style="color:var(--text-muted); font-size:0.9rem">已收錄 <span id="total-count">0</span> 張術語卡</span>
+  </div>
+
+  <div class="view-toggle">
+    <button id="btn-card-view" class="active" onclick="setViewMode('card')">🂠 卡片模式</button>
+    <button id="btn-list-view" onclick="setViewMode('list')">☰ 列表模式</button>
+  </div>
+
+  <div class="filter-row" id="term-filters"></div>
+
+  <!-- 卡片模式 -->
+  <div id="card-mode">
+    <div class="flashcard-controls">
+      <div class="progress-bar"><div class="progress-fill" id="term-progress"></div></div>
+      <div class="counter"><span class="current" id="term-current">1</span> / <span id="term-total">0</span></div>
+    </div>
+
+    <div class="flashcard-container">
+      <div class="flashcard" id="flashcard" onclick="flipCard()">
+        <div class="flashcard-face front">
+          <div class="card-badge" id="card-badge">類別</div>
+          <div class="card-abbr" id="card-abbr">ABC</div>
+          <div class="card-term-cn" id="card-term-cn">中文名</div>
+          <div class="card-hint">⟲ 點擊翻面查看定義</div>
+        </div>
+        <div class="flashcard-face back">
+          <div class="card-badge">定義</div>
+          <div class="card-english" id="card-english">English Full Name</div>
+          <div class="card-chinese" id="card-chinese">中文</div>
+          <div class="card-definition" id="card-definition">定義內容</div>
+          <div class="card-hint">⟲ 再次點擊返回</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard-nav">
+      <button class="btn" onclick="prevCard()">◀ 上一張</button>
+      <button class="btn btn-primary" onclick="flipCard()">翻面</button>
+      <button class="btn" onclick="shuffleCards()">🎲 隨機</button>
+      <button class="btn" onclick="nextCard()">下一張 ▶</button>
+    </div>
+  </div>
+
+  <!-- 列表模式 -->
+  <div id="list-mode" style="display:none">
+    <input type="text" class="search-box" id="term-search" placeholder="🔍 搜尋：縮寫、中文或英文全稱（例如：MAC、訊標、Beacon）" oninput="renderList()">
+    <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.5rem">
+      共 <span id="list-count">0</span> 張 ✦ 點擊卡片會切回卡片模式並聚焦
+    </div>
+    <div class="term-list" id="term-list"></div>
+  </div>
+</section>
+
+<!-- CONCEPTS placeholder -->
+<section class="section" id="concepts">
+  <h2 class="section-title">核心修煉 ─ 概念 + 試煉</h2>
+  <div class="intro-text" style="margin-bottom:1.5rem">
+    每一個概念後都附帶試煉題，作答後會告訴你對錯與解釋。建議依序修煉，打穩根基。
+  </div>
+  <div id="concepts-list"></div>
+</section>
+
+<!-- QUIZ -->
+<section class="section" id="quiz">
+  <h2 class="section-title">影子試煉 ─ 隨機測驗</h2>
+  <div class="quiz-panel" id="quiz-panel"></div>
+</section>
+
+<!-- MAP -->
+<section class="section" id="map">
+  <h2 class="section-title">靈脈圖 ─ 概念地圖</h2>
+  <div class="intro-text" style="margin-bottom:1rem">
+    點擊任何節點查看詳細說明。知識之間的連結就是你的戰力網。
+  </div>
+  <div class="map-wrapper">
+    <svg class="concept-map" id="concept-map" viewBox="0 0 1000 700" xmlns="http://www.w3.org/2000/svg"></svg>
+  </div>
+  <div class="node-info" id="node-info">
+    <h4>選擇一個節點</h4>
+    <p style="color:var(--text-muted)">點擊上方地圖中的任何節點以查看詳細資訊。</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  ✦ 影之軍團 · 為 Chris 獵人而召喚 ✦<br>
+  <span style="color:var(--purple-glow)">Arise ─ 起來吧，影之兵團</span>
+</footer>
+
+<script>
+// ==================== 資料：名詞 ====================
+const terms = [
+  // 基礎訊框結構
+  {abbr:'MAC', en:'Media Access Control', cn:'媒體存取控制', cat:'基礎', def:'位於 OSI 資料鏈結層的子層，負責控制裝置如何存取共用媒介。802.11 MAC 定義了無線訊框的格式與協議。'},
+  {abbr:'MPDU', en:'MAC Protocol Data Unit', cn:'MAC 協定資料單元', cat:'基礎', def:'MAC 層實際傳送的資料單元，即完整的 802.11 MAC 訊框（Frame Control + Duration + Addresses + Sequence + Frame Body + FCS）。'},
+  {abbr:'MSDU', en:'MAC Service Data Unit', cn:'MAC 服務資料單元', cat:'基礎', def:'從上層（LLC）傳遞給 MAC 層的資料單元。若過大，會由 MAC 切成多個 MPDU 片段傳送。'},
+  {abbr:'PDU', en:'Protocol Data Unit', cn:'協定資料單元', cat:'基礎', def:'通訊協議中同層實體間交換的資料單位。不同層有不同的 PDU 名稱（如 MPDU、PPDU）。'},
+  {abbr:'FCS', en:'Frame Check Sequence', cn:'訊框檢查序列', cat:'基礎', def:'訊框末端的 4 位元組 CRC-32 檢查碼，用於驗證訊框在傳輸過程中是否發生錯誤。'},
+  {abbr:'CRC', en:'Cyclic Redundancy Check', cn:'循環冗餘檢查', cat:'基礎', def:'一種錯誤偵測碼，透過多項式除法計算。802.11 使用 CRC-32 產生 FCS。'},
+
+  // 網路架構
+  {abbr:'BSS', en:'Basic Service Set', cn:'基本服務組', cat:'架構', def:'802.11 網路的基本單位。一組相互通訊的 STA 組成一個 BSS。分為 IBSS（無 AP）與 Infrastructure BSS（有 AP）。'},
+  {abbr:'IBSS', en:'Independent Basic Service Set', cn:'獨立基本服務組', cat:'架構', def:'無 AP 的對等式網路（Ad-hoc），STA 之間直接通訊。To DS=0、From DS=0。'},
+  {abbr:'ESS', en:'Extended Service Set', cn:'延伸服務組', cat:'架構', def:'由多個 BSS 透過 DS 連結所組成的較大網路，讓 STA 可以漫遊。'},
+  {abbr:'BSSID', en:'Basic Service Set Identifier', cn:'基本服務組識別碼', cat:'架構', def:'BSS 的唯一識別碼（48 位元）。Infrastructure 模式中為 AP 的 MAC 位址；IBSS 中為隨機產生的本地管理位址。'},
+  {abbr:'SSID', en:'Service Set Identifier', cn:'服務組識別碼', cat:'架構', def:'人類可讀的網路名稱，最長 32 位元組。多個 AP 可共用同一 SSID 組成 ESS。'},
+  {abbr:'AP', en:'Access Point', cn:'無線存取點', cat:'架構', def:'無線基地台。負責 STA 連結、訊框轉發、與有線網路銜接，是 Infrastructure BSS 的中心。'},
+  {abbr:'STA', en:'Station', cn:'站台 / 終端', cat:'架構', def:'具備 802.11 介面的任何無線裝置。AP 本身也是一種特殊的 STA。'},
+  {abbr:'DS', en:'Distribution System', cn:'分配系統', cat:'架構', def:'連接多個 BSS 的骨幹網路（通常為有線以太網），讓不同 BSS 間可以互通。'},
+  {abbr:'WDS', en:'Wireless Distribution System', cn:'無線分配系統', cat:'架構', def:'以無線方式連接多個 AP 形成橋接。需要使用 4 個位址欄位（To DS=1, From DS=1）。'},
+  {abbr:'DA', en:'Destination Address', cn:'目的端位址', cat:'位址', def:'訊框最終要送達的 STA MAC 位址。'},
+  {abbr:'SA', en:'Source Address', cn:'來源端位址', cat:'位址', def:'原始產生訊框的 STA MAC 位址。'},
+  {abbr:'RA', en:'Receiver Address', cn:'接收端位址', cat:'位址', def:'無線電上直接接收訊框的裝置位址（可能是中繼的 AP，而非最終目的）。'},
+  {abbr:'TA', en:'Transmitter Address', cn:'傳送端位址', cat:'位址', def:'無線電上實際發送訊框的裝置位址（可能是中繼的 AP，而非原始來源）。'},
+
+  // Frame Control 欄位
+  {abbr:'Frame Control', en:'Frame Control Field', cn:'訊框控制欄位', cat:'欄位', def:'MAC 訊框開頭的 2 位元組（16 bits），包含 Protocol Version、Type、SubType、To/From DS、More Frag、Retry、Pwr Mgt、More Data、Protected Frame、Order 等控制旗標。'},
+  {abbr:'To DS', en:'To Distribution System', cn:'前往分配系統旗標', cat:'欄位', def:'1 bit。=1 表示訊框要送往 DS（STA 傳給 AP）；=0 表示不送往 DS。'},
+  {abbr:'From DS', en:'From Distribution System', cn:'來自分配系統旗標', cat:'欄位', def:'1 bit。=1 表示訊框來自 DS（AP 傳給 STA）；=0 表示不是來自 DS。'},
+  {abbr:'More Frag', en:'More Fragments', cn:'尚有片段', cat:'欄位', def:'1 bit。=1 代表後面還有更多片段；=0 代表這是最後一個片段。'},
+  {abbr:'Retry', en:'Retry', cn:'重試旗標', cat:'欄位', def:'1 bit。=1 表示此訊框是重傳的副本，協助接收端辨別重複訊框。'},
+  {abbr:'Pwr Mgt', en:'Power Management', cn:'電源管理', cat:'欄位', def:'1 bit。=1 代表 STA 傳送後將進入省電模式；=0 代表保持清醒。'},
+  {abbr:'More Data', en:'More Data', cn:'尚有資料', cat:'欄位', def:'1 bit。AP 用於通知處於省電模式的 STA：還有被緩衝的訊框等著你。'},
+  {abbr:'WEP', en:'Wired Equivalent Privacy', cn:'有線等效隱私 / 受保護訊框旗標', cat:'欄位', def:'1 bit（Protected Frame）。=1 表示 Frame Body 已使用 WEP/加密處理。'},
+  {abbr:'Duration/ID', en:'Duration / ID', cn:'持續時間 / 識別碼', cat:'欄位', def:'2 位元組欄位。一般情況記錄 NAV（μs）供 VCS 使用；在 PS-Poll 則代表 AID。'},
+  {abbr:'NAV', en:'Network Allocation Vector', cn:'網路配置向量', cat:'機制', def:'虛擬載波偵測（VCS）用的計時器。其他 STA 收到訊框後更新 NAV，在期間內不發送。'},
+  {abbr:'Sequence Control', en:'Sequence Control', cn:'順序控制欄位', cat:'欄位', def:'2 位元組，含 4 bit Fragment Number 與 12 bit Sequence Number，用於識別片段與重複訊框。'},
+
+  // 管理訊框
+  {abbr:'Beacon', en:'Beacon Frame', cn:'訊標訊框', cat:'管理訊框', def:'AP 週期性廣播（典型 100 ms）的管理訊框，內含 Timestamp、Beacon Interval、Capability、SSID、Supported Rates、DS Parameter、TIM 等 IE，用於被動掃描與同步。'},
+  {abbr:'Probe Req', en:'Probe Request', cn:'試探要求', cat:'管理訊框', def:'STA 主動掃描時發送的訊框，用來詢問附近 AP。內含 SSID 與 Supported Rates。'},
+  {abbr:'Probe Resp', en:'Probe Response', cn:'試探回應', cat:'管理訊框', def:'AP 收到 Probe Request 後回覆的訊框，內容與 Beacon 類似。'},
+  {abbr:'Auth', en:'Authentication Frame', cn:'身份認證訊框', cat:'管理訊框', def:'用於 STA 與 AP 間身份驗證的管理訊框。含 Auth Algorithm Number、Sequence Number、Status Code 及（若為共享金鑰）Challenge Text。'},
+  {abbr:'Assoc Req', en:'Association Request', cn:'連結要求', cat:'管理訊框', def:'已認證的 STA 向 AP 要求加入 BSS 的訊框，含 Capability、Listen Interval、SSID、Supported Rates。'},
+  {abbr:'Assoc Resp', en:'Association Response', cn:'連結回應', cat:'管理訊框', def:'AP 回應連結要求的訊框，含 Capability、Status Code、AID、Supported Rates。'},
+  {abbr:'Reassoc Req', en:'Reassociation Request', cn:'重新連結要求', cat:'管理訊框', def:'STA 從舊 AP 漫遊到新 AP 時發送。與 Assoc Req 相比多了 Current AP Address 欄位。'},
+  {abbr:'Disassoc', en:'Disassociation', cn:'解除連結', cat:'管理訊框', def:'通知對方終止連結關係，含 Reason Code。'},
+  {abbr:'Deauth', en:'Deauthentication', cn:'身份認證終止', cat:'管理訊框', def:'通知對方終止認證（連同連結一併失效），含 Reason Code。'},
+  {abbr:'ATIM', en:'Announcement Traffic Indication Map', cn:'宣告式流量指示圖譜', cat:'管理訊框', def:'IBSS 中用於省電模式的訊框，通知對方「我有資料要傳給你」。'},
+
+  // 控制訊框
+  {abbr:'RTS', en:'Request To Send', cn:'要求傳送', cat:'控制訊框', def:'傳送端先送 RTS 以通知周遭 STA 更新 NAV，解決隱藏節點問題。'},
+  {abbr:'CTS', en:'Clear To Send', cn:'允許傳送', cat:'控制訊框', def:'接收端回覆 CTS，同時讓周遭 STA 更新 NAV，保留媒介給即將到來的資料。'},
+  {abbr:'ACK', en:'Acknowledgement', cn:'確認訊框', cat:'控制訊框', def:'接收端成功收到資料後回傳的確認，用來實作 MAC 層可靠性。'},
+  {abbr:'PS-Poll', en:'Power Save Poll', cn:'省電詢問', cat:'控制訊框', def:'省電的 STA 甦醒後送給 AP，向 AP 索取為它緩衝的訊框。Duration/ID 放 AID。'},
+  {abbr:'CF-End', en:'Contention Free End', cn:'無競爭週期結束', cat:'控制訊框', def:'PCF 無競爭週期結束的信號。'},
+
+  // 連結過程 / IE
+  {abbr:'AID', en:'Association ID', cn:'連結識別碼', cat:'連結', def:'AP 為每個成功連結的 STA 分配的唯一編號（1–2007），用於 TIM 位圖與 PS-Poll。'},
+  {abbr:'TIM', en:'Traffic Indication Map', cn:'流量指示圖譜', cat:'連結', def:'Beacon 中的 IE，以位圖告知哪些 AID（STA）有被緩衝的資料。'},
+  {abbr:'DTIM', en:'Delivery Traffic Indication Map', cn:'傳送流量指示圖譜', cat:'連結', def:'特殊的 TIM。AP 在 DTIM 時刻會送出被緩衝的群播/廣播訊框。'},
+  {abbr:'Capability Info', en:'Capability Information', cn:'能力資訊欄位', cat:'連結', def:'2 位元組欄位，宣告 ESS/IBSS、Privacy、Short Preamble、PBCC、Channel Agility、CF Pollable 等能力。'},
+  {abbr:'Listen Interval', en:'Listen Interval', cn:'監聽間隔', cat:'連結', def:'STA 在 Assoc Req 中告知 AP：我最多會隔多少個 Beacon 間隔才醒來一次，用於電源管理與緩衝。'},
+  {abbr:'IE', en:'Information Element', cn:'信息元素', cat:'連結', def:'管理訊框中可變長度欄位格式：Element ID + Length + Value。SSID、Supported Rates、TIM 等皆屬之。'},
+  {abbr:'Status Code', en:'Status Code', cn:'狀態碼', cat:'連結', def:'認證/連結回應中的 2 位元組欄位，0=成功，其他值代表失敗原因。'},
+  {abbr:'Reason Code', en:'Reason Code', cn:'原因碼', cat:'連結', def:'Disassociation/Deauthentication 中的 2 位元組欄位，說明為何終止。'},
+  {abbr:'Open System', en:'Open System Authentication', cn:'開放式系統認證', cat:'認證', def:'兩步握手（req / resp），不驗證金鑰，任何 STA 皆可通過。預設方式。'},
+  {abbr:'Shared Key', en:'Shared Key Authentication', cn:'共享金鑰認證', cat:'認證', def:'四步握手：req → challenge → encrypted challenge → result。使用 WEP 金鑰驗證。'},
+  {abbr:'Passive Scan', en:'Passive Scanning', cn:'被動掃描', cat:'掃描', def:'STA 在每個頻道上聆聽 AP 廣播的 Beacon。耗電低但費時。'},
+  {abbr:'Active Scan', en:'Active Scanning', cn:'主動掃描', cat:'掃描', def:'STA 在每個頻道主動發送 Probe Request，等 AP 回 Probe Response。較快但較耗電。'},
+  {abbr:'Roaming', en:'Roaming (Handoff)', cn:'漫遊 / 換手', cat:'連結', def:'STA 在同一 ESS 內從一個 AP 切換到另一個 AP 的過程，使用 Reassociation 完成。'},
+  {abbr:'TU', en:'Time Unit', cn:'時間單位', cat:'其他', def:'802.11 的時間單位，1 TU = 1024 μs。Beacon Interval 通常為 100 TU。'}
+];
+
+// ==================== 資料：概念 + 題目 ====================
+const concepts = [
+  {
+    title: 'MAC 訊框整體結構',
+    intro: `<strong>MAC 訊框</strong>是無線網卡實際在空氣中傳送的最小完整單位（MPDU）。<br>所有無線通訊 ── 不管是你連 Wi-Fi、還是 AP 廣播 Beacon ── 全都是在送不同「類型」的 MAC 訊框。理解訊框結構等於拿到解讀整個 802.11 的鑰匙。`,
+    diagram: `
+<svg viewBox="0 0 820 170" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:820px">
+  <defs>
+    <linearGradient id="hdrG" x1="0" x2="1"><stop offset="0%" stop-color="#6d28d9"/><stop offset="100%" stop-color="#4f46e5"/></linearGradient>
+    <linearGradient id="bodyG" x1="0" x2="1"><stop offset="0%" stop-color="#22d3ee"/><stop offset="100%" stop-color="#4f46e5"/></linearGradient>
+  </defs>
+  <g font-family="Consolas, monospace" text-anchor="middle" fill="#fff">
+    <rect x="10"  y="30" width="55"  height="60" fill="url(#hdrG)" stroke="#a855f7"/>
+    <text x="37.5" y="55" font-size="12">FC</text><text x="37.5" y="72" font-size="10" fill="#c4b5fd">2B</text>
+    <rect x="65"  y="30" width="60"  height="60" fill="url(#hdrG)" stroke="#a855f7"/>
+    <text x="95"  y="55" font-size="12">Dur/ID</text><text x="95" y="72" font-size="10" fill="#c4b5fd">2B</text>
+    <rect x="125" y="30" width="62"  height="60" fill="#7c3aed" stroke="#a855f7"/>
+    <text x="156" y="55" font-size="12">Addr 1</text><text x="156" y="72" font-size="10" fill="#c4b5fd">6B</text>
+    <rect x="187" y="30" width="62"  height="60" fill="#7c3aed" stroke="#a855f7"/>
+    <text x="218" y="55" font-size="12">Addr 2</text><text x="218" y="72" font-size="10" fill="#c4b5fd">6B</text>
+    <rect x="249" y="30" width="62"  height="60" fill="#7c3aed" stroke="#a855f7"/>
+    <text x="280" y="55" font-size="12">Addr 3</text><text x="280" y="72" font-size="10" fill="#c4b5fd">6B</text>
+    <rect x="311" y="30" width="55"  height="60" fill="url(#hdrG)" stroke="#a855f7"/>
+    <text x="338.5" y="55" font-size="12">Seq</text><text x="338.5" y="72" font-size="10" fill="#c4b5fd">2B</text>
+    <rect x="366" y="30" width="62"  height="60" fill="#4c1d95" stroke="#a855f7" stroke-dasharray="4 2"/>
+    <text x="397" y="55" font-size="12">Addr 4</text><text x="397" y="72" font-size="9" fill="#c4b5fd">6B · WDS</text>
+    <rect x="428" y="30" width="270" height="60" fill="url(#bodyG)" stroke="#22d3ee"/>
+    <text x="563" y="55" font-size="13">Frame Body</text><text x="563" y="72" font-size="10" fill="#a5f3fc">0 – 2312B</text>
+    <rect x="698" y="30" width="55"  height="60" fill="#f59e0b" stroke="#fbbf24"/>
+    <text x="725.5" y="55" font-size="12" fill="#1e1b4b">FCS</text><text x="725.5" y="72" font-size="10" fill="#1e1b4b">4B</text>
+  </g>
+  <g stroke="#a855f7" stroke-width="1" fill="none" opacity="0.6">
+    <path d="M10 100 L10 110 L366 110 L366 100"/>
+    <path d="M428 100 L428 110 L698 110 L698 100"/>
+  </g>
+  <text x="188" y="128" font-size="12" fill="#a855f7" text-anchor="middle">MAC Header（控制與定址）</text>
+  <text x="563" y="128" font-size="12" fill="#22d3ee" text-anchor="middle">Payload（實際資料 / IE）</text>
+  <text x="725" y="128" font-size="12" fill="#fbbf24" text-anchor="middle">檢查</text>
+  <text x="415" y="155" font-size="11" fill="#8b85a8" text-anchor="middle">※ Addr 4 僅在 WDS 情境出現（To DS=1 且 From DS=1）</text>
+</svg>`,
+    diagramCaption: '802.11 MAC 訊框（MPDU）欄位佈局',
+    content: `
+      <p>每個欄位扮演的角色：</p>
+      <table class="concept-table">
+        <tr><th>欄位</th><th>位元組</th><th>功能</th></tr>
+        <tr><td>Frame Control (FC)</td><td>2</td><td>訊框的「身分證」：Type、SubType、To/From DS、旗標們</td></tr>
+        <tr><td>Duration / ID</td><td>2</td><td>多半填 NAV（μs）供其他 STA 更新虛擬載波；在 PS-Poll 則是 AID</td></tr>
+        <tr><td>Address 1 (RA)</td><td>6</td><td>無線電上直接接收這個訊框的裝置</td></tr>
+        <tr><td>Address 2 (TA)</td><td>6</td><td>無線電上直接發送這個訊框的裝置</td></tr>
+        <tr><td>Address 3</td><td>6</td><td>依 To/From DS 組合，代表 BSSID、DA 或 SA</td></tr>
+        <tr><td>Sequence Control</td><td>2</td><td>4-bit 片段編號 + 12-bit 順序編號，用於分片與去重</td></tr>
+        <tr><td>Address 4</td><td>6</td><td><em>僅 WDS 使用</em>，一般情況下不出現</td></tr>
+        <tr><td>Frame Body</td><td>0 – 2312</td><td>實際載荷：資料、Information Elements…</td></tr>
+        <tr><td>FCS (CRC-32)</td><td>4</td><td>訊框錯誤偵測碼</td></tr>
+      </table>
+      <p><strong>記憶口訣：</strong><code>FC + 時間 + 位址*3 (或 4) + 順序 + 資料 + FCS</code></p>
+    `,
+    keyPoints: [
+      'Header 24 bytes（固定欄位），WDS 時多 6 bytes 變 30 bytes',
+      'Frame Body 最大 2312 bytes，最小可為 0（控制訊框）',
+      'FCS 是 CRC-32，放在最尾端',
+      '「Address 4」是陷阱：考試常考只有 WDS 會用'
+    ],
+    questions: [
+      {
+        q: '802.11 MAC 訊框中，下列哪個欄位不是固定會出現？',
+        options: ['Frame Control', 'Address 4', 'Duration/ID', 'FCS'],
+        answer: 1,
+        explain: 'Address 4 只有在 WDS（To DS=1, From DS=1）時才使用，其他情況不出現。'
+      },
+      {
+        q: 'FCS 欄位的作用為何？',
+        options: ['加密訊框', '錯誤偵測（CRC-32）', '記錄時間戳', '分配 AID'],
+        answer: 1,
+        explain: 'FCS（Frame Check Sequence）是 4 位元組的 CRC-32 檢查碼，用於偵測訊框錯誤。'
+      },
+      {
+        q: '一般情況下，802.11 MAC Header 的長度是？',
+        options: ['20 bytes', '24 bytes', '30 bytes', '可變無上限'],
+        answer: 1,
+        explain: '一般 MAC Header = 2 + 2 + 6×3 + 2 = 24 bytes。WDS 時加 Addr 4，變 30 bytes。'
+      }
+    ]
+  },
+  {
+    title: 'Frame Control 欄位（16 bits）',
+    intro: `Frame Control 是訊框開頭 2 bytes、共 <strong>16 個位元</strong>，像是「訊框的說明書」：告訴接收端這是什麼類型的訊框、要不要經過 DS、是否是重傳、是否加密、是否省電…一次講清楚。考試絕對會考某個 bit 的意義。`,
+    diagram: `
+<svg viewBox="0 0 820 230" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:820px">
+  <defs>
+    <linearGradient id="fcA" x1="0" x2="1"><stop offset="0%" stop-color="#6d28d9"/><stop offset="100%" stop-color="#8b5cf6"/></linearGradient>
+    <linearGradient id="fcB" x1="0" x2="1"><stop offset="0%" stop-color="#4f46e5"/><stop offset="100%" stop-color="#22d3ee"/></linearGradient>
+  </defs>
+  <g font-family="Consolas, monospace" text-anchor="middle" fill="#fff" font-size="11">
+    <!-- 16 bit boxes -->
+    ${'<!-- bit boxes generated -->'}
+    <g>
+      <rect x="10" y="50" width="95" height="45" fill="url(#fcA)" stroke="#a855f7"/>
+      <text x="57.5" y="70">Protocol Ver.</text><text x="57.5" y="86" font-size="10" fill="#c4b5fd">bit 0–1 · 2</text>
+      <rect x="105" y="50" width="95" height="45" fill="url(#fcA)" stroke="#a855f7"/>
+      <text x="152.5" y="70">Type</text><text x="152.5" y="86" font-size="10" fill="#c4b5fd">bit 2–3 · 2</text>
+      <rect x="200" y="50" width="140" height="45" fill="url(#fcA)" stroke="#a855f7"/>
+      <text x="270" y="70">SubType</text><text x="270" y="86" font-size="10" fill="#c4b5fd">bit 4–7 · 4</text>
+    </g>
+    <!-- 1-bit flags -->
+    <g>
+      <rect x="340" y="50" width="44" height="45" fill="url(#fcB)" stroke="#22d3ee"/>
+      <text x="362" y="70" font-size="10">To DS</text><text x="362" y="86" font-size="9" fill="#a5f3fc">8</text>
+      <rect x="384" y="50" width="44" height="45" fill="url(#fcB)" stroke="#22d3ee"/>
+      <text x="406" y="70" font-size="10">From DS</text><text x="406" y="86" font-size="9" fill="#a5f3fc">9</text>
+      <rect x="428" y="50" width="44" height="45" fill="url(#fcB)" stroke="#22d3ee"/>
+      <text x="450" y="70" font-size="10">M.Frag</text><text x="450" y="86" font-size="9" fill="#a5f3fc">10</text>
+      <rect x="472" y="50" width="44" height="45" fill="url(#fcB)" stroke="#22d3ee"/>
+      <text x="494" y="70" font-size="10">Retry</text><text x="494" y="86" font-size="9" fill="#a5f3fc">11</text>
+      <rect x="516" y="50" width="44" height="45" fill="url(#fcB)" stroke="#22d3ee"/>
+      <text x="538" y="70" font-size="10">Pwr Mgt</text><text x="538" y="86" font-size="9" fill="#a5f3fc">12</text>
+      <rect x="560" y="50" width="44" height="45" fill="url(#fcB)" stroke="#22d3ee"/>
+      <text x="582" y="70" font-size="10">M.Data</text><text x="582" y="86" font-size="9" fill="#a5f3fc">13</text>
+      <rect x="604" y="50" width="48" height="45" fill="#f59e0b" stroke="#fbbf24"/>
+      <text x="628" y="70" font-size="10" fill="#1e1b4b">WEP</text><text x="628" y="86" font-size="9" fill="#1e1b4b">14</text>
+      <rect x="652" y="50" width="44" height="45" fill="url(#fcB)" stroke="#22d3ee"/>
+      <text x="674" y="70" font-size="10">Order</text><text x="674" y="86" font-size="9" fill="#a5f3fc">15</text>
+    </g>
+    <!-- 上方區間 -->
+    <path d="M10 35 L10 25 L340 25 L340 35" stroke="#a855f7" fill="none"/>
+    <text x="175" y="18" fill="#a855f7" font-size="12">類型識別（8 bits）</text>
+    <path d="M340 35 L340 25 L696 25 L696 35" stroke="#22d3ee" fill="none"/>
+    <text x="518" y="18" fill="#22d3ee" font-size="12">8 個 1-bit 旗標</text>
+    <!-- 說明文字 -->
+    <g font-size="11" fill="#e9e4ff">
+      <text x="10" y="125">• Type: 00 管理 / 01 控制 / 10 資料 / 11 保留</text>
+      <text x="10" y="145">• SubType: 根據 Type 再細分，例如 Beacon、RTS、ACK…</text>
+      <text x="10" y="165">• To/From DS: 搭配決定 4 個位址的意義（IBSS、AP↔STA、WDS）</text>
+      <text x="10" y="185">• M.Frag 與 Retry: 分片和重傳控制</text>
+      <text x="10" y="205">• Pwr Mgt & M.Data: 電源管理相關；WEP bit: 訊框是否加密</text>
+    </g>
+  </g>
+</svg>`,
+    diagramCaption: 'Frame Control 欄位 16 bits 結構',
+    content: `
+      <p>16 個 bit 的對應表：</p>
+      <table class="concept-table">
+        <tr><th>位元</th><th>寬度</th><th>欄位</th><th>說明</th></tr>
+        <tr><td>0–1</td><td>2</td><td>Protocol Version</td><td>永遠為 0</td></tr>
+        <tr><td>2–3</td><td>2</td><td>Type</td><td>00 管理 / 01 控制 / 10 資料</td></tr>
+        <tr><td>4–7</td><td>4</td><td>SubType</td><td>細分訊框種類（16 種）</td></tr>
+        <tr><td>8</td><td>1</td><td>To DS</td><td>1 = 送往 DS</td></tr>
+        <tr><td>9</td><td>1</td><td>From DS</td><td>1 = 來自 DS</td></tr>
+        <tr><td>10</td><td>1</td><td>More Frag</td><td>1 = 還有更多片段</td></tr>
+        <tr><td>11</td><td>1</td><td>Retry</td><td>1 = 這是重傳</td></tr>
+        <tr><td>12</td><td>1</td><td>Pwr Mgt</td><td>1 = 傳完後要睡覺</td></tr>
+        <tr><td>13</td><td>1</td><td>More Data</td><td>AP 告知：還有緩衝資料等你</td></tr>
+        <tr><td>14</td><td>1</td><td>Protected (WEP)</td><td>1 = Frame Body 已加密</td></tr>
+        <tr><td>15</td><td>1</td><td>Order</td><td>1 = 需要嚴格順序</td></tr>
+      </table>
+    `,
+    keyPoints: [
+      '前 8 bits 決定「這是什麼訊框」（Proto + Type + SubType）',
+      '後 8 bits 是 8 個 1-bit 旗標，每個代表一種狀態',
+      '常考的「AP 告訴 STA 還有緩衝資料」= More Data bit',
+      '常考的「STA 要睡了」= Pwr Mgt bit',
+      'Protected Frame bit 就是舊稱的 WEP bit'
+    ],
+    questions: [
+      {
+        q: 'Frame Control 中 Type=00, SubType=1000 代表哪種訊框？',
+        options: ['Probe Request', 'Beacon', 'Association Response', 'ACK'],
+        answer: 1,
+        explain: 'Type=00 為管理訊框，SubType=1000（二進位 8）為 Beacon 訊標訊框。'
+      },
+      {
+        q: '當 STA 即將進入省電模式，它會把 Frame Control 中哪個位元設為 1？',
+        options: ['More Data', 'Pwr Mgt', 'Retry', 'Order'],
+        answer: 1,
+        explain: 'Pwr Mgt 位元 = 1 告訴 AP：這個 STA 傳完這個訊框後會進入省電模式。'
+      },
+      {
+        q: 'More Data 位元 = 1 的含義是？',
+        options: ['還有更多片段要傳', '訊框是重傳的', 'AP 還有被緩衝的資料等這個 STA', '訊框經過加密'],
+        answer: 2,
+        explain: 'More Data 由 AP 設定，通知省電中的 STA：還有更多訊框為你緩衝中，請持續醒著。'
+      }
+    ]
+  },
+  {
+    title: '位址欄位與 To/From DS',
+    intro: `為什麼要有 4 個位址？因為 802.11 訊框除了「最終收/發的電腦」，還要記錄「空中跳點」。例如你用手機傳 LINE 給同學，空中的路徑是：<strong>手機 → AP → 網際網路 → 對方</strong>。MAC 訊框用 <strong>To DS / From DS</strong> 兩個位元組合出 4 種情境，每種情境 4 個位址代表的意義不同。`,
+    diagram: `
+<svg viewBox="0 0 820 340" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:820px">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a855f7"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, sans-serif" fill="#fff">
+    <!-- IBSS (0,0) -->
+    <g transform="translate(20, 10)">
+      <rect width="180" height="150" rx="8" fill="rgba(139,92,246,0.08)" stroke="#a855f7"/>
+      <text x="90" y="20" text-anchor="middle" font-size="13" fill="#a855f7">① IBSS（0, 0）</text>
+      <circle cx="40" cy="80" r="22" fill="#4f46e5" stroke="#a855f7"/><text x="40" y="84" text-anchor="middle" font-size="11">STA A</text>
+      <circle cx="140" cy="80" r="22" fill="#4f46e5" stroke="#a855f7"/><text x="140" y="84" text-anchor="middle" font-size="11">STA B</text>
+      <line x1="62" y1="80" x2="118" y2="80" stroke="#a855f7" stroke-width="2" marker-end="url(#arrow)"/>
+      <text x="90" y="125" text-anchor="middle" font-size="10" fill="#c4b5fd">Addr1=DA · Addr2=SA · Addr3=BSSID</text>
+    </g>
+    <!-- AP → STA (0,1) -->
+    <g transform="translate(220, 10)">
+      <rect width="180" height="150" rx="8" fill="rgba(34,211,238,0.08)" stroke="#22d3ee"/>
+      <text x="90" y="20" text-anchor="middle" font-size="13" fill="#22d3ee">② AP → STA（0, 1）</text>
+      <rect x="18" y="58" width="44" height="44" rx="6" fill="#4c1d95" stroke="#22d3ee"/><text x="40" y="84" text-anchor="middle" font-size="11">AP</text>
+      <circle cx="140" cy="80" r="22" fill="#4f46e5" stroke="#22d3ee"/><text x="140" y="84" text-anchor="middle" font-size="11">STA</text>
+      <line x1="62" y1="80" x2="118" y2="80" stroke="#22d3ee" stroke-width="2" marker-end="url(#arrow)"/>
+      <text x="90" y="125" text-anchor="middle" font-size="10" fill="#a5f3fc">Addr1=DA · Addr2=BSSID · Addr3=SA</text>
+    </g>
+    <!-- STA → AP (1,0) -->
+    <g transform="translate(420, 10)">
+      <rect width="180" height="150" rx="8" fill="rgba(168,85,247,0.08)" stroke="#a855f7"/>
+      <text x="90" y="20" text-anchor="middle" font-size="13" fill="#a855f7">③ STA → AP（1, 0）</text>
+      <circle cx="40" cy="80" r="22" fill="#4f46e5" stroke="#a855f7"/><text x="40" y="84" text-anchor="middle" font-size="11">STA</text>
+      <rect x="118" y="58" width="44" height="44" rx="6" fill="#4c1d95" stroke="#a855f7"/><text x="140" y="84" text-anchor="middle" font-size="11">AP</text>
+      <line x1="62" y1="80" x2="118" y2="80" stroke="#a855f7" stroke-width="2" marker-end="url(#arrow)"/>
+      <text x="90" y="125" text-anchor="middle" font-size="10" fill="#c4b5fd">Addr1=BSSID · Addr2=SA · Addr3=DA</text>
+    </g>
+    <!-- WDS (1,1) -->
+    <g transform="translate(620, 10)">
+      <rect width="180" height="150" rx="8" fill="rgba(251,191,36,0.08)" stroke="#fbbf24"/>
+      <text x="90" y="20" text-anchor="middle" font-size="13" fill="#fbbf24">④ WDS（1, 1）</text>
+      <rect x="18" y="58" width="44" height="44" rx="6" fill="#4c1d95" stroke="#fbbf24"/><text x="40" y="84" text-anchor="middle" font-size="11">AP1</text>
+      <rect x="118" y="58" width="44" height="44" rx="6" fill="#4c1d95" stroke="#fbbf24"/><text x="140" y="84" text-anchor="middle" font-size="11">AP2</text>
+      <line x1="62" y1="80" x2="118" y2="80" stroke="#fbbf24" stroke-width="2" marker-end="url(#arrow)"/>
+      <text x="90" y="125" text-anchor="middle" font-size="10" fill="#fde68a">4 個位址 RA/TA/DA/SA 皆需要</text>
+    </g>
+    <!-- 下方文字 -->
+    <g font-size="13" fill="#e9e4ff">
+      <text x="410" y="200" text-anchor="middle" font-weight="600">✦ 鐵律：Addr1 永遠是「收訊者」(RA)，Addr2 永遠是「發訊者」(TA) ✦</text>
+    </g>
+    <!-- 速查表 -->
+    <g transform="translate(80, 220)">
+      <rect width="660" height="110" rx="6" fill="rgba(5,3,13,0.4)" stroke="#8b5cf6"/>
+      <g font-family="Consolas, monospace" font-size="12" fill="#e9e4ff" text-anchor="middle">
+        <text x="80" y="25" fill="#a855f7">情境</text>
+        <text x="160" y="25" fill="#a855f7">To/From DS</text>
+        <text x="260" y="25" fill="#a855f7">Addr1</text>
+        <text x="360" y="25" fill="#a855f7">Addr2</text>
+        <text x="460" y="25" fill="#a855f7">Addr3</text>
+        <text x="560" y="25" fill="#a855f7">Addr4</text>
+        <text x="80" y="48">IBSS</text>     <text x="160" y="48">0 / 0</text><text x="260" y="48">DA</text>    <text x="360" y="48">SA</text>    <text x="460" y="48">BSSID</text><text x="560" y="48">—</text>
+        <text x="80" y="66">AP→STA</text>   <text x="160" y="66">0 / 1</text><text x="260" y="66">DA</text>    <text x="360" y="66">BSSID</text> <text x="460" y="66">SA</text>   <text x="560" y="66">—</text>
+        <text x="80" y="84">STA→AP</text>   <text x="160" y="84">1 / 0</text><text x="260" y="84">BSSID</text> <text x="360" y="84">SA</text>    <text x="460" y="84">DA</text>   <text x="560" y="84">—</text>
+        <text x="80" y="102">WDS</text>     <text x="160" y="102">1 / 1</text><text x="260" y="102">RA</text>    <text x="360" y="102">TA</text>    <text x="460" y="102">DA</text>   <text x="560" y="102">SA</text>
+      </g>
+    </g>
+  </g>
+</svg>`,
+    diagramCaption: '四種 To/From DS 組合下，Addr1~4 分別代表什麼',
+    content: `
+      <p>依 To DS 與 From DS 的組合，4 個位址欄位代表不同意義：</p>
+      <table class="concept-table">
+        <tr><th>情境</th><th>To DS</th><th>From DS</th><th>Addr1</th><th>Addr2</th><th>Addr3</th><th>Addr4</th></tr>
+        <tr><td>IBSS（對等）</td><td>0</td><td>0</td><td>DA</td><td>SA</td><td>BSSID</td><td>—</td></tr>
+        <tr><td>AP → STA</td><td>0</td><td>1</td><td>DA</td><td>BSSID</td><td>SA</td><td>—</td></tr>
+        <tr><td>STA → AP</td><td>1</td><td>0</td><td>BSSID</td><td>SA</td><td>DA</td><td>—</td></tr>
+        <tr><td>WDS（AP 間）</td><td>1</td><td>1</td><td>RA</td><td>TA</td><td>DA</td><td>SA</td></tr>
+      </table>
+      <p>重點是區分這些角色：</p>
+      <ul>
+        <li><span class="pill purple">DA / SA</span>原始的「目的端 / 來源端」（可能是網際網路上的伺服器）</li>
+        <li><span class="pill">RA / TA</span>這一跳在無線電上實際的「收/發雙方」（可能是中繼 AP）</li>
+        <li><span class="pill gold">BSSID</span>這個 BSS 的識別碼（在 Infra 模式就是 AP 的 MAC）</li>
+      </ul>
+    `,
+    keyPoints: [
+      'Addr1 = RA（空中接收者），Addr2 = TA（空中發送者）——永遠成立',
+      '只有 WDS 才需要 4 個位址',
+      'STA→AP 方向：Addr1 是 BSSID（因為 AP 就是接收方）',
+      'AP→STA 方向：Addr3 放原始 SA（可能是外部伺服器）'
+    ],
+    questions: [
+      {
+        q: 'STA 要透過 AP 傳送資料到網際網路上的伺服器，訊框的 To DS 與 From DS 為？',
+        options: ['0, 0', '0, 1', '1, 0', '1, 1'],
+        answer: 2,
+        explain: 'STA → AP 方向：To DS=1（要送往 DS）、From DS=0（尚未經 DS）。'
+      },
+      {
+        q: '在 AP → STA 方向的訊框中，Address 3 代表什麼？',
+        options: ['BSSID', 'DA 目的端', 'SA 原始來源（可能是網際網路上的裝置）', 'TA 傳送端'],
+        answer: 2,
+        explain: 'AP → STA（To=0, From=1）：Addr1=DA、Addr2=BSSID、Addr3=SA。Addr3 存放原始來源，例如有線網路上的伺服器 MAC。'
+      },
+      {
+        q: '哪種情境下需要用到 Address 4？',
+        options: ['IBSS 對等通訊', '一般 STA 上網', 'AP 間使用 WDS 橋接', 'Beacon 廣播'],
+        answer: 2,
+        explain: 'Address 4 僅在 WDS（To DS=1, From DS=1，AP 間無線橋接）時使用，此時 RA/TA/DA/SA 是四個不同裝置。'
+      }
+    ]
+  },
+  {
+    title: '訊框類型 (Type) 與子型態 (SubType)',
+    intro: `為了高效率地管理無線媒介，802.11 把訊框分成三大家族：<strong>管理（Management）</strong>負責建立與維護連線、<strong>控制（Control）</strong>負責協調誰何時可以講話、<strong>資料（Data）</strong>才是真正的內容。三大類各自有自己的子型態，考試經常會問「某某訊框屬於哪一類」。`,
+    diagram: `
+<svg viewBox="0 0 820 360" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:820px">
+  <g font-family="system-ui, sans-serif" fill="#fff">
+    <!-- Root -->
+    <rect x="320" y="15" width="180" height="44" rx="22" fill="url(#hdrG)" stroke="#a855f7"/>
+    <text x="410" y="42" text-anchor="middle" font-size="14" font-weight="600">802.11 訊框</text>
+    <!-- Lines to 3 children -->
+    <line x1="410" y1="59" x2="150" y2="100" stroke="#8b5cf6" stroke-width="1.5"/>
+    <line x1="410" y1="59" x2="410" y2="100" stroke="#8b5cf6" stroke-width="1.5"/>
+    <line x1="410" y1="59" x2="670" y2="100" stroke="#8b5cf6" stroke-width="1.5"/>
+    <!-- Children -->
+    <g>
+      <rect x="40" y="100" width="220" height="40" rx="8" fill="#6d28d9" stroke="#a855f7"/>
+      <text x="150" y="118" text-anchor="middle" font-size="13">Management（Type=00）</text>
+      <text x="150" y="133" text-anchor="middle" font-size="10" fill="#c4b5fd">管理連線、建立關係</text>
+      <rect x="300" y="100" width="220" height="40" rx="8" fill="#4f46e5" stroke="#22d3ee"/>
+      <text x="410" y="118" text-anchor="middle" font-size="13">Control（Type=01）</text>
+      <text x="410" y="133" text-anchor="middle" font-size="10" fill="#a5f3fc">媒介協調、確認</text>
+      <rect x="560" y="100" width="220" height="40" rx="8" fill="#065A82" stroke="#22d3ee"/>
+      <text x="670" y="118" text-anchor="middle" font-size="13">Data（Type=10）</text>
+      <text x="670" y="133" text-anchor="middle" font-size="10" fill="#a5f3fc">實際載荷資料</text>
+    </g>
+    <!-- Subtypes -->
+    <g font-size="11" text-anchor="middle">
+      <!-- Management -->
+      <line x1="150" y1="140" x2="150" y2="160" stroke="#8b5cf6"/>
+      <g fill="#e9e4ff">
+        <rect x="20" y="160" width="110" height="26" rx="4" fill="rgba(139,92,246,0.15)" stroke="#a855f7"/><text x="75" y="177">Beacon (1000)</text>
+        <rect x="20" y="192" width="110" height="26" rx="4" fill="rgba(139,92,246,0.15)" stroke="#a855f7"/><text x="75" y="209">Probe Req/Resp</text>
+        <rect x="20" y="224" width="110" height="26" rx="4" fill="rgba(139,92,246,0.15)" stroke="#a855f7"/><text x="75" y="241">Authentication</text>
+        <rect x="20" y="256" width="110" height="26" rx="4" fill="rgba(139,92,246,0.15)" stroke="#a855f7"/><text x="75" y="273">(Re)Assoc Req/Resp</text>
+        <rect x="20" y="288" width="110" height="26" rx="4" fill="rgba(139,92,246,0.15)" stroke="#a855f7"/><text x="75" y="305">Disassoc / Deauth</text>
+        <rect x="145" y="192" width="110" height="26" rx="4" fill="rgba(139,92,246,0.15)" stroke="#a855f7"/><text x="200" y="209">ATIM</text>
+      </g>
+      <!-- Control -->
+      <line x1="410" y1="140" x2="410" y2="160" stroke="#22d3ee"/>
+      <g fill="#e9e4ff">
+        <rect x="305" y="160" width="90" height="26" rx="4" fill="rgba(34,211,238,0.12)" stroke="#22d3ee"/><text x="350" y="177">RTS (1011)</text>
+        <rect x="305" y="192" width="90" height="26" rx="4" fill="rgba(34,211,238,0.12)" stroke="#22d3ee"/><text x="350" y="209">CTS (1100)</text>
+        <rect x="305" y="224" width="90" height="26" rx="4" fill="rgba(34,211,238,0.12)" stroke="#22d3ee"/><text x="350" y="241">ACK (1101)</text>
+        <rect x="410" y="176" width="110" height="26" rx="4" fill="rgba(34,211,238,0.12)" stroke="#22d3ee"/><text x="465" y="193">PS-Poll (1010)</text>
+        <rect x="410" y="208" width="110" height="26" rx="4" fill="rgba(34,211,238,0.12)" stroke="#22d3ee"/><text x="465" y="225">CF-End (1110)</text>
+      </g>
+      <!-- Data -->
+      <line x1="670" y1="140" x2="670" y2="160" stroke="#22d3ee"/>
+      <g fill="#e9e4ff">
+        <rect x="615" y="160" width="110" height="26" rx="4" fill="rgba(6,90,130,0.4)" stroke="#22d3ee"/><text x="670" y="177">Data (0000)</text>
+        <rect x="615" y="192" width="110" height="26" rx="4" fill="rgba(6,90,130,0.4)" stroke="#22d3ee"/><text x="670" y="209">Null Function</text>
+        <rect x="615" y="224" width="110" height="26" rx="4" fill="rgba(6,90,130,0.4)" stroke="#22d3ee"/><text x="670" y="241">Data+CF-Ack</text>
+        <rect x="615" y="256" width="110" height="26" rx="4" fill="rgba(6,90,130,0.4)" stroke="#22d3ee"/><text x="670" y="273">Data+CF-Poll</text>
+      </g>
+    </g>
+  </g>
+</svg>`,
+    diagramCaption: '三大訊框類型與常考子型態',
+    content: `
+      <p>常考子型態對照：</p>
+      <table class="concept-table">
+        <tr><th>SubType (二進位)</th><th>類型</th><th>名稱</th></tr>
+        <tr><td>0000 / 0001</td><td>Mgmt</td><td>Association Request / Response</td></tr>
+        <tr><td>0010 / 0011</td><td>Mgmt</td><td>Reassociation Request / Response</td></tr>
+        <tr><td>0100 / 0101</td><td>Mgmt</td><td>Probe Request / Response</td></tr>
+        <tr><td>1000</td><td>Mgmt</td><td>Beacon</td></tr>
+        <tr><td>1010 / 1011 / 1100</td><td>Mgmt</td><td>Disassoc / Authentication / Deauth</td></tr>
+        <tr><td>1010</td><td>Ctrl</td><td>PS-Poll</td></tr>
+        <tr><td>1011 / 1100 / 1101</td><td>Ctrl</td><td>RTS / CTS / ACK</td></tr>
+        <tr><td>0000</td><td>Data</td><td>Data</td></tr>
+      </table>
+      <p>⚠️ <strong>小心陷阱：</strong> <code>1011</code> 在 Mgmt 是 Authentication，在 Control 卻是 RTS。光看 SubType 不夠，要合併 Type 判斷。</p>
+    `,
+    keyPoints: [
+      '記住三大類：Mgmt(00)、Ctrl(01)、Data(10)',
+      'Beacon、Probe、Auth、Assoc 全是 Mgmt',
+      'RTS/CTS/ACK/PS-Poll 全是 Ctrl',
+      '資料訊框只有 Data（還有含 CF-Ack/CF-Poll 組合但考試少見）'
+    ],
+    questions: [
+      {
+        q: '下列哪個訊框屬於控制訊框 (Control Frame)？',
+        options: ['Beacon', 'Probe Request', 'RTS', 'Reassociation Request'],
+        answer: 2,
+        explain: 'RTS（Request To Send）屬於控制訊框（Type=01）。Beacon、Probe、Reassoc 都是管理訊框。'
+      },
+      {
+        q: '哪個訊框由 AP 週期性廣播，用於告知存在與同步？',
+        options: ['Probe Response', 'Beacon', 'Association Response', 'ACK'],
+        answer: 1,
+        explain: 'Beacon 是 AP 週期性（通常 100 TU）廣播的管理訊框，用於被動掃描。'
+      }
+    ]
+  },
+  {
+    title: '掃描：被動 vs 主動',
+    intro: `當你打開筆電的 Wi-Fi 選單，看到一長串 SSID——這些是怎麼出現的？STA 在連線前必須先「找到」附近的 AP，這個過程叫 <strong>掃描（Scanning）</strong>。有兩種策略：閉嘴聽（被動）或開口問（主動），各有優缺點，是經典比較題。`,
+    diagram: `
+<svg viewBox="0 0 820 260" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:820px">
+  <defs>
+    <marker id="arrP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#22d3ee"/>
+    </marker>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a855f7"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, sans-serif" fill="#fff">
+    <!-- Passive -->
+    <g transform="translate(10, 10)">
+      <rect width="390" height="240" rx="8" fill="rgba(34,211,238,0.05)" stroke="#22d3ee"/>
+      <text x="195" y="25" text-anchor="middle" font-size="15" fill="#22d3ee" font-weight="600">被動掃描 (Passive)</text>
+      <text x="195" y="42" text-anchor="middle" font-size="11" fill="#a5f3fc">STA 安靜聆聽 AP 週期廣播的 Beacon</text>
+      <!-- STA & AP -->
+      <circle cx="50" cy="120" r="22" fill="#4f46e5" stroke="#22d3ee"/><text x="50" y="124" text-anchor="middle" font-size="11">STA</text>
+      <rect x="308" y="98" width="44" height="44" rx="6" fill="#4c1d95" stroke="#22d3ee"/><text x="330" y="124" text-anchor="middle" font-size="11">AP</text>
+      <line x1="50" y1="60" x2="50" y2="200" stroke="#22d3ee" stroke-dasharray="2 3" opacity="0.4"/>
+      <line x1="330" y1="60" x2="330" y2="200" stroke="#22d3ee" stroke-dasharray="2 3" opacity="0.4"/>
+      <!-- 3 beacons -->
+      <line x1="320" y1="85" x2="75" y2="85" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrP)"/>
+      <text x="200" y="78" text-anchor="middle" font-size="11" fill="#a5f3fc">Beacon (100 TU)</text>
+      <line x1="320" y1="160" x2="75" y2="160" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrP)"/>
+      <text x="200" y="153" text-anchor="middle" font-size="11" fill="#a5f3fc">Beacon (100 TU)</text>
+      <line x1="320" y1="200" x2="75" y2="200" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrP)"/>
+      <text x="200" y="193" text-anchor="middle" font-size="11" fill="#a5f3fc">Beacon (100 TU)</text>
+      <!-- 優缺 -->
+      <text x="195" y="225" text-anchor="middle" font-size="11" fill="#86efac">✅ 耗電低</text>
+      <text x="195" y="240" text-anchor="middle" font-size="11" fill="#fca5a5">❌ 慢（等 Beacon 週期）</text>
+    </g>
+    <!-- Active -->
+    <g transform="translate(420, 10)">
+      <rect width="390" height="240" rx="8" fill="rgba(168,85,247,0.05)" stroke="#a855f7"/>
+      <text x="195" y="25" text-anchor="middle" font-size="15" fill="#a855f7" font-weight="600">主動掃描 (Active)</text>
+      <text x="195" y="42" text-anchor="middle" font-size="11" fill="#c4b5fd">STA 主動送 Probe Request，AP 立即回應</text>
+      <circle cx="50" cy="120" r="22" fill="#4f46e5" stroke="#a855f7"/><text x="50" y="124" text-anchor="middle" font-size="11">STA</text>
+      <rect x="308" y="98" width="44" height="44" rx="6" fill="#4c1d95" stroke="#a855f7"/><text x="330" y="124" text-anchor="middle" font-size="11">AP</text>
+      <line x1="50" y1="60" x2="50" y2="200" stroke="#a855f7" stroke-dasharray="2 3" opacity="0.4"/>
+      <line x1="330" y1="60" x2="330" y2="200" stroke="#a855f7" stroke-dasharray="2 3" opacity="0.4"/>
+      <!-- Probe req -->
+      <line x1="75" y1="90" x2="305" y2="90" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrA)"/>
+      <text x="195" y="83" text-anchor="middle" font-size="11" fill="#c4b5fd">① Probe Request</text>
+      <!-- Probe resp -->
+      <line x1="305" y1="130" x2="75" y2="130" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrA)"/>
+      <text x="195" y="123" text-anchor="middle" font-size="11" fill="#c4b5fd">② Probe Response</text>
+      <text x="195" y="170" text-anchor="middle" font-size="11" fill="#fde047">（內容與 Beacon 幾乎相同）</text>
+      <text x="195" y="225" text-anchor="middle" font-size="11" fill="#86efac">✅ 快（毫秒級）</text>
+      <text x="195" y="240" text-anchor="middle" font-size="11" fill="#fca5a5">❌ 較耗電</text>
+    </g>
+  </g>
+</svg>`,
+    diagramCaption: '被動掃描 vs 主動掃描的訊號流程',
+    content: `
+      <table class="concept-table">
+        <tr><th>比較項目</th><th>被動 Passive</th><th>主動 Active</th></tr>
+        <tr><td>誰先發話</td><td>AP 廣播 Beacon</td><td>STA 送 Probe Request</td></tr>
+        <tr><td>STA 行為</td><td>安靜聆聽</td><td>主動發問</td></tr>
+        <tr><td>耗電</td><td>低</td><td>高</td></tr>
+        <tr><td>速度</td><td>慢（至少等一個 Beacon Interval）</td><td>快（毫秒級）</td></tr>
+        <tr><td>能否發現隱藏 SSID</td><td>有困難（Beacon 可能不含 SSID）</td><td>可以（送已知 SSID 的 Probe）</td></tr>
+      </table>
+      <p>⚡ Beacon 與 Probe Response 的內容<strong>幾乎完全一樣</strong>：Timestamp、Beacon Interval、Capability、SSID、Supported Rates、DS Parameter Set、TIM…</p>
+    `,
+    keyPoints: [
+      '被動 = 聽 Beacon；主動 = 送 Probe Req',
+      '筆電等插電裝置通常用主動（快）；手機常用被動（省電）',
+      'Probe Response 基本上就是「點對點版的 Beacon」'
+    ],
+    questions: [
+      {
+        q: '被動掃描相比主動掃描的主要優點是？',
+        options: ['速度較快', '耗電較低', '安全性較高', '可發現隱藏 SSID'],
+        answer: 1,
+        explain: '被動掃描只聆聽 Beacon、不主動發送訊框，因此較省電；但需等 AP 廣播，速度較慢。'
+      },
+      {
+        q: 'STA 想快速找到附近所有 AP，應使用？',
+        options: ['被動掃描', '主動掃描', '手動配置 SSID', '等 Reassociation'],
+        answer: 1,
+        explain: '主動掃描直接送 Probe Request，AP 立即回應，速度比被動掃描快得多。'
+      },
+      {
+        q: '下列何者是 Probe Request 的內容？',
+        options: ['AID', 'Timestamp', 'SSID + Supported Rates', 'Reason Code'],
+        answer: 2,
+        explain: 'Probe Request 主要包含 SSID（可為空表示搜尋所有）與 Supported Rates。'
+      }
+    ]
+  },
+  {
+    title: '身份認證：Open System vs Shared Key',
+    intro: `找到 AP 之後，STA 要先「自我介紹」讓 AP 認識——這就是 <strong>身份認證</strong>。802.11 原生定義兩種認證方式：<strong>開放式（Open System）</strong>其實就是打聲招呼，幾乎不驗證；<strong>共享金鑰（Shared Key）</strong>則用 WEP 金鑰做 challenge-response 挑戰。兩者的步驟數是重要考點。`,
+    diagram: `
+<svg viewBox="0 0 820 360" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:820px">
+  <defs>
+    <marker id="arrAuth" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a855f7"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, sans-serif" fill="#fff">
+    <!-- Open System -->
+    <g transform="translate(10, 10)">
+      <rect width="390" height="340" rx="8" fill="rgba(34,197,94,0.05)" stroke="#22c55e"/>
+      <text x="195" y="24" text-anchor="middle" font-size="15" fill="#22c55e" font-weight="600">開放式認證（2 步）</text>
+      <text x="195" y="42" text-anchor="middle" font-size="11" fill="#86efac">不驗證金鑰；安全由上層 (WPA2) 負責</text>
+      <circle cx="60" cy="80" r="20" fill="#4f46e5" stroke="#22c55e"/><text x="60" y="84" text-anchor="middle" font-size="11">STA</text>
+      <rect x="310" y="60" width="40" height="40" rx="5" fill="#4c1d95" stroke="#22c55e"/><text x="330" y="84" text-anchor="middle" font-size="11">AP</text>
+      <line x1="60" y1="105" x2="60" y2="320" stroke="#22c55e" stroke-dasharray="2 3" opacity="0.5"/>
+      <line x1="330" y1="105" x2="330" y2="320" stroke="#22c55e" stroke-dasharray="2 3" opacity="0.5"/>
+      <line x1="85" y1="150" x2="305" y2="150" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrAuth)"/>
+      <text x="195" y="143" text-anchor="middle" font-size="11" fill="#e9e4ff">① Auth Req (seq=1)</text>
+      <line x1="305" y1="200" x2="85" y2="200" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrAuth)"/>
+      <text x="195" y="193" text-anchor="middle" font-size="11" fill="#e9e4ff">② Auth Resp (seq=2, Status=0)</text>
+      <text x="195" y="260" text-anchor="middle" font-size="13" fill="#86efac">✓ 認證成功</text>
+      <text x="195" y="295" text-anchor="middle" font-size="10" fill="#86efac">結果：State 1 → State 2</text>
+    </g>
+    <!-- Shared Key -->
+    <g transform="translate(420, 10)">
+      <rect width="390" height="340" rx="8" fill="rgba(251,191,36,0.05)" stroke="#fbbf24"/>
+      <text x="195" y="24" text-anchor="middle" font-size="15" fill="#fbbf24" font-weight="600">共享金鑰認證（4 步）</text>
+      <text x="195" y="42" text-anchor="middle" font-size="11" fill="#fde047">雙方需共用 WEP 金鑰做加密挑戰</text>
+      <circle cx="60" cy="80" r="20" fill="#4f46e5" stroke="#fbbf24"/><text x="60" y="84" text-anchor="middle" font-size="11">STA</text>
+      <rect x="310" y="60" width="40" height="40" rx="5" fill="#4c1d95" stroke="#fbbf24"/><text x="330" y="84" text-anchor="middle" font-size="11">AP</text>
+      <line x1="60" y1="105" x2="60" y2="320" stroke="#fbbf24" stroke-dasharray="2 3" opacity="0.5"/>
+      <line x1="330" y1="105" x2="330" y2="320" stroke="#fbbf24" stroke-dasharray="2 3" opacity="0.5"/>
+      <line x1="85" y1="130" x2="305" y2="130" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrAuth)"/>
+      <text x="195" y="123" text-anchor="middle" font-size="11" fill="#e9e4ff">① Auth Req (seq=1)</text>
+      <line x1="305" y1="170" x2="85" y2="170" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrAuth)"/>
+      <text x="195" y="163" text-anchor="middle" font-size="11" fill="#e9e4ff">② Challenge (seq=2, 明文)</text>
+      <line x1="85" y1="215" x2="305" y2="215" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrAuth)"/>
+      <text x="195" y="205" text-anchor="middle" font-size="11" fill="#e9e4ff">③ 加密後 Challenge (seq=3)</text>
+      <text x="195" y="230" text-anchor="middle" font-size="9" fill="#fde047">（用共享 WEP 金鑰加密）</text>
+      <line x1="305" y1="270" x2="85" y2="270" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrAuth)"/>
+      <text x="195" y="263" text-anchor="middle" font-size="11" fill="#e9e4ff">④ Result (seq=4, Status Code)</text>
+      <text x="195" y="310" text-anchor="middle" font-size="10" fill="#fca5a5">⚠ WEP 已不安全，現代網路少用</text>
+    </g>
+  </g>
+</svg>`,
+    diagramCaption: '兩種 802.11 原生認證流程比較',
+    content: `
+      <table class="concept-table">
+        <tr><th>比較項目</th><th>Open System</th><th>Shared Key</th></tr>
+        <tr><td>交握步數</td><td>2</td><td>4</td></tr>
+        <tr><td>是否驗證金鑰</td><td>不驗證</td><td>用 WEP 金鑰加密 challenge</td></tr>
+        <tr><td>安全性</td><td>低（靠上層）</td><td>中（WEP 本身已被破解）</td></tr>
+        <tr><td>Auth Algorithm 欄位值</td><td>0</td><td>1</td></tr>
+      </table>
+      <p>Authentication 訊框包含：<code>Algorithm Number</code>（0/1）、<code>Transaction Seq Number</code>（1~4）、<code>Status Code</code>、若為 Shared Key 還會有 <code>Challenge Text</code>。</p>
+    `,
+    keyPoints: [
+      'Open System 2 步，Shared Key 4 步',
+      'Open System 實質上人人都過；真正的安全來自上層 WPA2/WPA3',
+      'Shared Key 第 3 步是 STA 用 WEP 加密後把 challenge 送回',
+      '認證訊框是管理訊框（Mgmt, Type=00, SubType=1011）'
+    ],
+    questions: [
+      {
+        q: 'Shared Key Authentication 需要幾步交握？',
+        options: ['2', '3', '4', '5'],
+        answer: 2,
+        explain: 'Shared Key 為 4 步：Auth Req → Challenge → Encrypted Challenge → Result。'
+      },
+      {
+        q: 'Open System Authentication 的安全性如何？',
+        options: ['非常高，使用 AES 加密', '中等，依賴金鑰', '本質上不驗證身份，要靠上層（如 WPA2）提供安全', '無法連接網路'],
+        answer: 2,
+        explain: 'Open System 只有兩步、不驗證金鑰，實際安全要靠上層協定（例如 WPA2/3）。'
+      }
+    ]
+  },
+  {
+    title: '完整連結流程（Scanning → Auth → Assoc）',
+    intro: `從「打開 Wi-Fi」到「能上網」中間其實經歷了 <strong>三個階段、六個訊框</strong>。考試最愛出的就是要你 <strong>排序</strong> 這些訊框，或問某個步驟完成後 STA 處於什麼狀態。`,
+    diagram: `
+<svg viewBox="0 0 820 440" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:820px">
+  <defs>
+    <marker id="arrFlow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a855f7"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, sans-serif" fill="#fff">
+    <circle cx="100" cy="50" r="28" fill="#4f46e5" stroke="#a855f7" stroke-width="2"/><text x="100" y="54" text-anchor="middle" font-size="12">STA</text>
+    <rect x="672" y="22" width="56" height="56" rx="8" fill="#4c1d95" stroke="#a855f7" stroke-width="2"/><text x="700" y="54" text-anchor="middle" font-size="12">AP</text>
+    <line x1="100" y1="82" x2="100" y2="420" stroke="#a855f7" stroke-dasharray="2 3" opacity="0.5"/>
+    <line x1="700" y1="82" x2="700" y2="420" stroke="#a855f7" stroke-dasharray="2 3" opacity="0.5"/>
+    <!-- Phase 1: Scan -->
+    <rect x="20" y="95" width="780" height="90" rx="6" fill="rgba(34,211,238,0.05)" stroke="#22d3ee" stroke-dasharray="5 3"/>
+    <text x="30" y="112" font-size="12" fill="#22d3ee">Phase ① 掃描 Scanning</text>
+    <line x1="130" y1="135" x2="670" y2="135" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrFlow)"/>
+    <text x="400" y="128" text-anchor="middle" font-size="12">① Probe Request</text>
+    <line x1="670" y1="170" x2="130" y2="170" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrFlow)"/>
+    <text x="400" y="163" text-anchor="middle" font-size="12">② Probe Response</text>
+    <!-- Phase 2: Auth -->
+    <rect x="20" y="195" width="780" height="90" rx="6" fill="rgba(168,85,247,0.05)" stroke="#a855f7" stroke-dasharray="5 3"/>
+    <text x="30" y="212" font-size="12" fill="#a855f7">Phase ② 身份認證 Authentication</text>
+    <line x1="130" y1="235" x2="670" y2="235" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrFlow)"/>
+    <text x="400" y="228" text-anchor="middle" font-size="12">③ Authentication Request</text>
+    <line x1="670" y1="270" x2="130" y2="270" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrFlow)"/>
+    <text x="400" y="263" text-anchor="middle" font-size="12">④ Authentication Response</text>
+    <!-- Phase 3: Association -->
+    <rect x="20" y="295" width="780" height="90" rx="6" fill="rgba(251,191,36,0.05)" stroke="#fbbf24" stroke-dasharray="5 3"/>
+    <text x="30" y="312" font-size="12" fill="#fbbf24">Phase ③ 連結 Association</text>
+    <line x1="130" y1="335" x2="670" y2="335" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrFlow)"/>
+    <text x="400" y="328" text-anchor="middle" font-size="12">⑤ Association Request</text>
+    <line x1="670" y1="370" x2="130" y2="370" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrFlow)"/>
+    <text x="400" y="363" text-anchor="middle" font-size="12">⑥ Association Response（含 AID）</text>
+    <!-- Final -->
+    <text x="400" y="410" text-anchor="middle" font-size="13" fill="#86efac">✓ 此時 STA 進入 State 3，可以傳 Data 上網</text>
+  </g>
+</svg>`,
+    diagramCaption: '完整 6 步連結流程',
+    content: `
+      <p>逐步說明：</p>
+      <ol>
+        <li><strong>Probe Request</strong>（STA→）主動掃描時發。若被動掃描則省略此步，聆聽 Beacon。</li>
+        <li><strong>Probe Response</strong>（←AP）AP 把自己的能力、SSID、速率等告訴 STA。</li>
+        <li><strong>Authentication Req</strong>（STA→）STA 要求認證，含 Algorithm Number。</li>
+        <li><strong>Authentication Resp</strong>（←AP）Open System 只有這一來回；Shared Key 會多兩步 Challenge。</li>
+        <li><strong>Association Request</strong>（STA→）含 Capability、Listen Interval、SSID、Supported Rates。</li>
+        <li><strong>Association Response</strong>（←AP）含 Status Code、<strong>AID</strong>、AP 支援的速率。</li>
+      </ol>
+      <p>完成後 STA 就擁有 AID，正式加入 BSS，可以開始收送 Data 訊框。</p>
+    `,
+    keyPoints: [
+      '順序記憶：Probe → Auth → Assoc',
+      '每個階段都是「Req 一去，Resp 一回」',
+      'Association Response 會分配 AID，之後省電時很重要',
+      '若 STA 已經通過 Auth 但還沒 Assoc，不能傳 Data'
+    ],
+    questions: [
+      {
+        q: 'STA 連上 AP 並上網的正確順序為？',
+        options: [
+          'Association → Authentication → Scan',
+          'Scan → Association → Authentication',
+          'Scan → Authentication → Association',
+          'Authentication → Scan → Association'
+        ],
+        answer: 2,
+        explain: '必須先掃描找 AP，再完成身份認證，最後才能建立連結（Association）。'
+      },
+      {
+        q: 'STA 完成 Association 後收到什麼重要資訊？',
+        options: ['WEP 金鑰', 'AID', 'Beacon Interval', 'Timestamp'],
+        answer: 1,
+        explain: 'Association Response 中含 AID，用於 TIM 位圖與 PS-Poll。'
+      }
+    ]
+  },
+  {
+    title: 'STA 連結狀態機（3 個狀態）',
+    intro: `802.11 規定 STA 相對於 AP 有 <strong>三個狀態</strong>：每個狀態可以傳送哪些訊框有嚴格限制（分別叫 Class 1/2/3 訊框）。考試常問「某個訊框在哪個狀態能送」或「某個事件發生後 STA 變到哪一態」。`,
+    diagram: `
+<svg viewBox="0 0 820 300" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:820px">
+  <defs>
+    <marker id="arrS" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#22d3ee"/>
+    </marker>
+    <marker id="arrBack" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#ef4444"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, sans-serif" fill="#fff">
+    <!-- 3 states -->
+    <circle cx="120" cy="160" r="70" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="2"/>
+    <text x="120" y="145" text-anchor="middle" font-size="14" font-weight="600">State 1</text>
+    <text x="120" y="165" text-anchor="middle" font-size="11" fill="#fca5a5">未認證</text>
+    <text x="120" y="182" text-anchor="middle" font-size="11" fill="#fca5a5">未連結</text>
+    <text x="120" y="200" text-anchor="middle" font-size="10" fill="#fca5a5">Class 1 only</text>
+
+    <circle cx="410" cy="160" r="70" fill="rgba(251,191,36,0.1)" stroke="#fbbf24" stroke-width="2"/>
+    <text x="410" y="145" text-anchor="middle" font-size="14" font-weight="600">State 2</text>
+    <text x="410" y="165" text-anchor="middle" font-size="11" fill="#fde047">已認證</text>
+    <text x="410" y="182" text-anchor="middle" font-size="11" fill="#fde047">未連結</text>
+    <text x="410" y="200" text-anchor="middle" font-size="10" fill="#fde047">Class 1 + 2</text>
+
+    <circle cx="700" cy="160" r="70" fill="rgba(34,197,94,0.1)" stroke="#22c55e" stroke-width="2"/>
+    <text x="700" y="145" text-anchor="middle" font-size="14" font-weight="600">State 3</text>
+    <text x="700" y="165" text-anchor="middle" font-size="11" fill="#86efac">已認證</text>
+    <text x="700" y="182" text-anchor="middle" font-size="11" fill="#86efac">已連結</text>
+    <text x="700" y="200" text-anchor="middle" font-size="10" fill="#86efac">所有訊框</text>
+
+    <!-- 前進 arrows -->
+    <path d="M 190 140 Q 265 100 340 140" fill="none" stroke="#22d3ee" stroke-width="2" marker-end="url(#arrS)"/>
+    <text x="265" y="95" text-anchor="middle" font-size="11" fill="#22d3ee">Auth 成功</text>
+    <path d="M 480 140 Q 555 100 630 140" fill="none" stroke="#22d3ee" stroke-width="2" marker-end="url(#arrS)"/>
+    <text x="555" y="95" text-anchor="middle" font-size="11" fill="#22d3ee">Assoc 成功</text>
+
+    <!-- 後退 arrows -->
+    <path d="M 340 180 Q 265 220 190 180" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#arrBack)"/>
+    <text x="265" y="240" text-anchor="middle" font-size="11" fill="#ef4444">Deauth</text>
+    <path d="M 630 180 Q 555 220 480 180" fill="none" stroke="#ef4444" stroke-width="2" marker-end="url(#arrBack)"/>
+    <text x="555" y="240" text-anchor="middle" font-size="11" fill="#ef4444">Disassoc</text>
+
+    <!-- 一次跳兩格 -->
+    <path d="M 700 90 Q 410 15 120 90" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#arrBack)"/>
+    <text x="410" y="30" text-anchor="middle" font-size="11" fill="#ef4444">Deauth（由任何狀態回 State 1）</text>
+
+    <text x="410" y="280" text-anchor="middle" font-size="12" fill="#8b85a8">※ Class 1 = Beacon/Probe/Auth/RTS/CTS/ACK；Class 2 = Assoc；Class 3 = Data</text>
+  </g>
+</svg>`,
+    diagramCaption: 'STA 三個狀態與轉移事件',
+    content: `
+      <table class="concept-table">
+        <tr><th>狀態</th><th>條件</th><th>能送的訊框</th></tr>
+        <tr><td>State 1</td><td>未認證、未連結</td><td>Class 1：Beacon、Probe、Auth、RTS、CTS、ACK</td></tr>
+        <tr><td>State 2</td><td>已認證、未連結</td><td>Class 1 + Class 2（Assoc Req 等）</td></tr>
+        <tr><td>State 3</td><td>已認證、已連結</td><td>所有訊框，包括 Data</td></tr>
+      </table>
+      <p><strong>轉移規則：</strong></p>
+      <ul>
+        <li>Auth 成功：State 1 → State 2</li>
+        <li>Assoc 成功：State 2 → State 3</li>
+        <li>Disassoc：State 3 → State 2（只解除連結，認證保留）</li>
+        <li>Deauth：任何狀態 → State 1（整個重來）</li>
+      </ul>
+    `,
+    keyPoints: [
+      '三態記法：沒認證 / 認了但沒連 / 都有了',
+      '只有 State 3 能傳 Data',
+      'Disassoc 退一格（→ 2）；Deauth 退到底（→ 1）',
+      'Beacon、Probe、Auth 是 Class 1，任何狀態都能送'
+    ],
+    questions: [
+      {
+        q: '下列何者不是 State 1（未認證）就能送的訊框？',
+        options: ['Probe Request', 'Beacon', 'Authentication', 'Data'],
+        answer: 3,
+        explain: 'Data 屬於 Class 3，必須進入 State 3（已認證且已連結）才能傳送。'
+      },
+      {
+        q: 'STA 收到 Disassociation 後會進入哪個狀態？',
+        options: ['State 1', 'State 2', 'State 3', '關機'],
+        answer: 1,
+        explain: 'Disassoc 只解除連結但仍保留認證，因此進入 State 2（已認證、未連結）。'
+      }
+    ]
+  },
+  {
+    title: 'Beacon 訊框內容',
+    intro: `<strong>Beacon</strong> 是 AP 每 100 TU（≈102.4 ms）向全世界廣播的「我在這裡！」訊框。它承擔三個任務：<strong>宣告存在</strong>（被動掃描）、<strong>同步時鐘</strong>（Timestamp）、<strong>通知有無緩衝資料</strong>（TIM）。考試常問 Beacon 裡面有什麼、Beacon Interval 的單位。`,
+    diagram: `
+<svg viewBox="0 0 820 260" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:820px">
+  <g font-family="system-ui, sans-serif" fill="#fff">
+    <text x="410" y="22" text-anchor="middle" font-size="14" fill="#a855f7" font-weight="600">Beacon Frame Body 結構</text>
+    <!-- 固定欄位 -->
+    <rect x="20" y="50" width="120" height="70" fill="url(#hdrG)" stroke="#a855f7"/>
+    <text x="80" y="82" text-anchor="middle" font-size="11">Timestamp</text>
+    <text x="80" y="100" text-anchor="middle" font-size="10" fill="#c4b5fd">8 bytes</text>
+    <rect x="140" y="50" width="110" height="70" fill="url(#hdrG)" stroke="#a855f7"/>
+    <text x="195" y="78" text-anchor="middle" font-size="11">Beacon</text>
+    <text x="195" y="92" text-anchor="middle" font-size="11">Interval</text>
+    <text x="195" y="108" text-anchor="middle" font-size="10" fill="#c4b5fd">2 bytes</text>
+    <rect x="250" y="50" width="110" height="70" fill="url(#hdrG)" stroke="#a855f7"/>
+    <text x="305" y="78" text-anchor="middle" font-size="11">Capability</text>
+    <text x="305" y="92" text-anchor="middle" font-size="11">Information</text>
+    <text x="305" y="108" text-anchor="middle" font-size="10" fill="#c4b5fd">2 bytes</text>
+    <!-- IEs -->
+    <rect x="360" y="50" width="440" height="70" fill="url(#bodyG)" stroke="#22d3ee"/>
+    <text x="580" y="78" text-anchor="middle" font-size="12" font-weight="600">Information Elements（可變長度）</text>
+    <text x="580" y="95" text-anchor="middle" font-size="10" fill="#a5f3fc">SSID · Supported Rates · DS Param · TIM · IBSS Param …</text>
+    <text x="580" y="112" text-anchor="middle" font-size="9" fill="#a5f3fc">格式：[Element ID] [Length] [Value]</text>
+    <!-- 固定/可變標示 -->
+    <path d="M20 135 L20 145 L360 145 L360 135" stroke="#a855f7" fill="none"/>
+    <text x="190" y="160" text-anchor="middle" font-size="11" fill="#a855f7">固定欄位（12 bytes）</text>
+    <path d="M360 135 L360 145 L800 145 L800 135" stroke="#22d3ee" fill="none"/>
+    <text x="580" y="160" text-anchor="middle" font-size="11" fill="#22d3ee">可變 Information Elements</text>
+    <!-- Capability bits -->
+    <g transform="translate(40, 180)">
+      <rect width="740" height="65" rx="6" fill="rgba(5,3,13,0.5)" stroke="#a855f7"/>
+      <text x="370" y="20" text-anchor="middle" font-size="12" fill="#a855f7">Capability Information（2 bytes）重要旗標</text>
+      <g font-size="10" fill="#e9e4ff" text-anchor="middle">
+        <rect x="20" y="30" width="100" height="22" rx="3" fill="rgba(168,85,247,0.15)"/>
+        <text x="70" y="46">ESS / IBSS</text>
+        <rect x="130" y="30" width="100" height="22" rx="3" fill="rgba(168,85,247,0.15)"/>
+        <text x="180" y="46">Privacy (WEP)</text>
+        <rect x="240" y="30" width="120" height="22" rx="3" fill="rgba(168,85,247,0.15)"/>
+        <text x="300" y="46">Short Preamble</text>
+        <rect x="370" y="30" width="80" height="22" rx="3" fill="rgba(168,85,247,0.15)"/>
+        <text x="410" y="46">PBCC</text>
+        <rect x="460" y="30" width="140" height="22" rx="3" fill="rgba(168,85,247,0.15)"/>
+        <text x="530" y="46">Channel Agility</text>
+        <rect x="610" y="30" width="110" height="22" rx="3" fill="rgba(168,85,247,0.15)"/>
+        <text x="665" y="46">CF Pollable</text>
+      </g>
+    </g>
+  </g>
+</svg>`,
+    diagramCaption: 'Beacon 訊框本體：3 個固定欄位 + 多個 IE',
+    content: `
+      <p>Beacon Frame Body 由兩部分組成：</p>
+      <p><strong>① 固定欄位（12 bytes）：</strong></p>
+      <ul>
+        <li><code>Timestamp</code>（8B）— AP 的計時器，供 STA 同步</li>
+        <li><code>Beacon Interval</code>（2B）— 廣播週期，單位 TU（1 TU = 1024 μs），典型 100 TU</li>
+        <li><code>Capability Information</code>（2B）— 16 bit 的能力旗標（ESS、Privacy、Short Preamble…）</li>
+      </ul>
+      <p><strong>② Information Elements（可變）：</strong> 格式 <code>[ID][長度][內容]</code>，常見有：</p>
+      <ul>
+        <li>SSID（ID=0）</li>
+        <li>Supported Rates（ID=1）— 如 1, 2, 5.5, 11 Mbps</li>
+        <li>DS Parameter Set（ID=3）— 當前頻道</li>
+        <li>TIM（ID=5）— 有哪些 AID 有緩衝資料</li>
+        <li>IBSS Parameter Set（ID=6）— 僅 IBSS</li>
+      </ul>
+    `,
+    keyPoints: [
+      'Beacon Interval 單位是 TU = 1024 μs',
+      '100 TU ≈ 102.4 ms，典型值',
+      'Beacon 與 Probe Response 內容幾乎一樣',
+      'TIM 只在 Beacon 裡，DTIM 是特殊的 Beacon'
+    ],
+    questions: [
+      {
+        q: 'Beacon Interval 的單位為何？',
+        options: ['毫秒 (ms)', '微秒 (μs)', 'TU = 1024 μs', '秒'],
+        answer: 2,
+        explain: '單位為 TU（Time Unit）= 1024 μs。100 TU ≈ 102.4 ms。'
+      },
+      {
+        q: '被動掃描的 STA 主要依賴哪個訊框找到 AP？',
+        options: ['Probe Response', 'Beacon', 'Association Response', 'ACK'],
+        answer: 1,
+        explain: '被動掃描就是聆聽 Beacon；主動掃描才靠 Probe Response。'
+      }
+    ]
+  },
+  {
+    title: '省電模式、TIM、PS-Poll',
+    intro: `手機、筆電為了<strong>省電</strong>會暫時關閉 Wi-Fi 射頻睡覺。但睡著了怎麼知道有沒有新的訊框要收？這就是 <strong>TIM / PS-Poll / Beacon</strong> 三者組合的經典機制：AP 先幫你存起來，用 Beacon 定期通知「你有信件」，醒來後用 PS-Poll 取回。`,
+    diagram: `
+<svg viewBox="0 0 820 400" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:820px">
+  <defs>
+    <marker id="arrPs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a855f7"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, sans-serif" fill="#fff">
+    <!-- Header -->
+    <circle cx="80" cy="40" r="22" fill="#4f46e5" stroke="#a855f7"/><text x="80" y="44" text-anchor="middle" font-size="11">STA</text>
+    <rect x="718" y="20" width="44" height="44" rx="6" fill="#4c1d95" stroke="#a855f7"/><text x="740" y="46" text-anchor="middle" font-size="11">AP</text>
+    <line x1="80" y1="65" x2="80" y2="380" stroke="#a855f7" stroke-dasharray="2 3" opacity="0.5"/>
+    <line x1="740" y1="65" x2="740" y2="380" stroke="#a855f7" stroke-dasharray="2 3" opacity="0.5"/>
+    <!-- Step 1: Pwr Mgt=1 -->
+    <line x1="105" y1="95" x2="715" y2="95" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrPs)"/>
+    <text x="410" y="88" text-anchor="middle" font-size="12">① Data frame (Pwr Mgt=1)：「我要睡了」</text>
+    <!-- STA 睡覺 icon -->
+    <rect x="55" y="110" width="50" height="32" rx="4" fill="rgba(139,92,246,0.2)" stroke="#a855f7"/>
+    <text x="80" y="130" text-anchor="middle" font-size="10" fill="#c4b5fd">💤 睡眠</text>
+    <!-- AP 緩衝 -->
+    <rect x="690" y="110" width="100" height="32" rx="4" fill="rgba(251,191,36,0.15)" stroke="#fbbf24"/>
+    <text x="740" y="130" text-anchor="middle" font-size="10" fill="#fde047">📥 緩衝訊框</text>
+    <!-- Step 2: Beacon with TIM -->
+    <line x1="715" y1="175" x2="105" y2="175" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrPs)"/>
+    <text x="410" y="168" text-anchor="middle" font-size="12" fill="#a5f3fc">② Beacon（含 TIM：AID 位圖）</text>
+    <text x="410" y="193" text-anchor="middle" font-size="10" fill="#8b85a8">STA 依 Listen Interval 定期甦醒檢查</text>
+    <!-- Step 3: STA wakes and checks TIM -->
+    <rect x="55" y="210" width="50" height="24" rx="4" fill="rgba(34,211,238,0.15)" stroke="#22d3ee"/>
+    <text x="80" y="227" text-anchor="middle" font-size="10" fill="#a5f3fc">⏰ 醒來</text>
+    <!-- Step 4: PS-Poll -->
+    <line x1="105" y1="260" x2="715" y2="260" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrPs)"/>
+    <text x="410" y="253" text-anchor="middle" font-size="12">③ PS-Poll（Duration/ID = AID）</text>
+    <!-- Step 5: Data delivery -->
+    <line x1="715" y1="300" x2="105" y2="300" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrPs)"/>
+    <text x="410" y="293" text-anchor="middle" font-size="12">④ AP 傳送緩衝的 Data 訊框</text>
+    <!-- Step 6: ACK -->
+    <line x1="105" y1="340" x2="715" y2="340" stroke="#a855f7" stroke-width="1.5" marker-end="url(#arrPs)"/>
+    <text x="410" y="333" text-anchor="middle" font-size="12">⑤ ACK</text>
+    <!-- STA back to sleep -->
+    <rect x="55" y="355" width="50" height="24" rx="4" fill="rgba(139,92,246,0.2)" stroke="#a855f7"/>
+    <text x="80" y="372" text-anchor="middle" font-size="10" fill="#c4b5fd">💤 再睡</text>
+  </g>
+</svg>`,
+    diagramCaption: '省電模式完整流程：睡 → Beacon 通知 → PS-Poll 取回',
+    content: `
+      <p>完整省電流程：</p>
+      <ol>
+        <li>STA 在某個訊框把 Frame Control 的 <strong>Pwr Mgt bit 設為 1</strong>，告訴 AP「我要睡了」</li>
+        <li>AP 把給這個 STA 的單播訊框先<strong>緩衝起來</strong></li>
+        <li>AP 在每個 Beacon 裡透過 <strong>TIM IE</strong> 的位圖（以 AID 為索引）告知大家「誰有訊框在等」</li>
+        <li>STA 依 <strong>Listen Interval</strong> 定期醒來接 Beacon，檢查 TIM 中自己的位</li>
+        <li>若有，STA 送 <strong>PS-Poll</strong>（控制訊框，Duration/ID 欄填 AID）</li>
+        <li>AP 收到 PS-Poll 後把訊框傳給 STA，STA 回 ACK</li>
+      </ol>
+      <p><strong>廣播/群播訊框：</strong> 因為所有 STA 都要收，AP 不會在收到 PS-Poll 才送。AP 會在特殊的 Beacon（<strong>DTIM</strong>）時刻一併送出，這樣所有省電的 STA 都有機會醒來接到。</p>
+    `,
+    keyPoints: [
+      '關鍵四件事：Pwr Mgt bit、TIM、Listen Interval、PS-Poll',
+      'TIM 位圖以 AID 作索引 → 沒有 AID 就沒辦法用省電',
+      'PS-Poll 的 Duration/ID 欄填的是 AID（不是時間）',
+      '廣播/群播要在 DTIM 時刻才發'
+    ],
+    questions: [
+      {
+        q: '省電的 STA 要向 AP 索取被緩衝的訊框時，會使用哪種訊框？',
+        options: ['Probe Request', 'ATIM', 'PS-Poll', 'RTS'],
+        answer: 2,
+        explain: 'PS-Poll 是省電的 STA 甦醒後向 AP 取回緩衝訊框的控制訊框。'
+      },
+      {
+        q: 'TIM 位圖如何對應到特定 STA？',
+        options: ['透過 MAC 位址', '透過 SSID', '透過 AID 作為位圖索引', '透過 Sequence Number'],
+        answer: 2,
+        explain: '每個 STA 在 Association 時獲得唯一的 AID，TIM 的位圖用 AID 當索引，位元為 1 表示 AP 有東西要給你。'
+      },
+      {
+        q: 'AP 何時會發送被緩衝的廣播/群播訊框？',
+        options: ['每個 Beacon', '收到 PS-Poll 時', 'DTIM 時刻', 'RTS 之後'],
+        answer: 2,
+        explain: '廣播/群播訊框是全員相關，AP 在 DTIM 時刻一次送出，讓所有省電 STA 都能醒來接收。'
+      }
+    ]
+  },
+  {
+    title: 'Reassociation（漫遊）與斷線',
+    intro: `當你在辦公室邊走邊講視訊、或帶著筆電在大學樓層間移動時，裝置會自動切換到<strong>訊號更強的 AP</strong>，這就是<strong>漫遊（Roaming）</strong>。在 802.11 裡漫遊靠的不是重新做一次 Association，而是用 <strong>Reassociation</strong>，讓新 AP 知道舊 AP 的身份以便協調（例如交接緩衝訊框）。而<strong>斷線</strong>則分成兩種層級：Disassociation 只拆「連結」、Deauthentication 連「認證」也拆掉。`,
+    diagram: `
+<svg viewBox="0 0 820 360" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:820px">
+  <defs>
+    <marker id="arrRe" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a855f7"/>
+    </marker>
+    <radialGradient id="sigOld" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="sigNew" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#a855f7" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#a855f7" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <g font-family="system-ui, sans-serif" fill="#fff">
+    <!-- Distribution System bar -->
+    <rect x="60" y="20" width="700" height="28" rx="6" fill="#1e1b4b" stroke="#4f46e5"/>
+    <text x="410" y="38" text-anchor="middle" font-size="12" fill="#c7d2fe">Distribution System (同一 ESS)</text>
+
+    <!-- Signal clouds -->
+    <circle cx="200" cy="200" r="150" fill="url(#sigOld)"/>
+    <circle cx="620" cy="200" r="150" fill="url(#sigNew)"/>
+
+    <!-- AP1 -->
+    <rect x="170" y="60" width="60" height="40" rx="6" fill="#0c4a6e" stroke="#22d3ee"/>
+    <text x="200" y="85" text-anchor="middle" font-size="12" fill="#a5f3fc">AP1 (舊)</text>
+    <line x1="200" y1="48" x2="200" y2="60" stroke="#22d3ee"/>
+
+    <!-- AP2 -->
+    <rect x="590" y="60" width="60" height="40" rx="6" fill="#4c1d95" stroke="#a855f7"/>
+    <text x="620" y="85" text-anchor="middle" font-size="12" fill="#c4b5fd">AP2 (新)</text>
+    <line x1="620" y1="48" x2="620" y2="60" stroke="#a855f7"/>
+
+    <!-- STA positions: before (near AP1) and after (near AP2) -->
+    <g opacity="0.45">
+      <circle cx="200" cy="230" r="18" fill="#4f46e5" stroke="#a5f3fc"/>
+      <text x="200" y="234" text-anchor="middle" font-size="10">STA</text>
+      <text x="200" y="262" text-anchor="middle" font-size="10" fill="#8b85a8">原位置</text>
+    </g>
+    <g>
+      <circle cx="620" cy="230" r="20" fill="#4f46e5" stroke="#a855f7" stroke-width="2"/>
+      <text x="620" y="234" text-anchor="middle" font-size="10">STA</text>
+      <text x="620" y="264" text-anchor="middle" font-size="10" fill="#c4b5fd">漫遊後</text>
+    </g>
+
+    <!-- Movement arrow -->
+    <path d="M225 230 Q 410 150 595 230" stroke="#fbbf24" stroke-width="2" stroke-dasharray="5 4" fill="none" marker-end="url(#arrRe)"/>
+    <text x="410" y="160" text-anchor="middle" font-size="12" fill="#fde047">📡 訊號變弱 → 發現 AP2 更強 → Reassociation</text>
+
+    <!-- Reassoc Request box -->
+    <rect x="280" y="290" width="260" height="50" rx="6" fill="rgba(139,92,246,0.15)" stroke="#a855f7"/>
+    <text x="410" y="310" text-anchor="middle" font-size="12" fill="#e0e7ff">Reassoc Request → AP2</text>
+    <text x="410" y="328" text-anchor="middle" font-size="10" fill="#c4b5fd">含 Current AP Address = AP1 的 MAC</text>
+  </g>
+</svg>`,
+    diagramCaption: 'Roaming 示意：STA 在同一 ESS 內從 AP1 換到 AP2，用 Reassoc Request 通知新 AP「我之前連在哪」',
+    content: `
+      <p>三個容易搞混的「離開」訊框，差別就在<strong>「只拆連結」還是「連認證一起拆」</strong>：</p>
+      <ul>
+        <li><strong>Reassociation：</strong> STA 在同一 ESS 內從 AP1 漫遊到 AP2。Reassoc Request 比 Assoc Request 多一個 <strong>Current AP Address</strong> 欄位，讓新 AP 可以通知舊 AP「這個 STA 我接手了」，必要時進行狀態轉移（例如緩衝的訊框）。</li>
+        <li><strong>Disassociation：</strong> 只解除「連結」關係（State 3 → State 2），<strong>保留認證</strong>。帶 <strong>Reason Code</strong>。如果之後要再用，只需做 Association 即可，不用重跑認證。</li>
+        <li><strong>Deauthentication：</strong> 把「認證」關係也拆掉（直接回到 State 1），<strong>連結自動失效</strong>。要再使用必須從 Authentication 重新開始。</li>
+      </ul>
+      <table style="margin-top:12px">
+        <thead><tr><th>訊框</th><th>狀態變化</th><th>帶的關鍵欄位</th></tr></thead>
+        <tbody>
+          <tr><td>Reassoc Request</td><td>State 3 (AP1) → State 3 (AP2)</td><td>Current AP Address, SSID, Listen Interval</td></tr>
+          <tr><td>Disassociation</td><td>State 3 → State 2</td><td>Reason Code</td></tr>
+          <tr><td>Deauthentication</td><td>State 2 or 3 → State 1</td><td>Reason Code</td></tr>
+        </tbody>
+      </table>
+    `,
+    keyPoints: [
+      'Reassoc Request 最大特色：多了 Current AP Address（指向舊 AP）',
+      'Disassoc ⊂ Deauth：Deauth 一定會讓連結失效，Disassoc 則保留認證',
+      '兩者都帶 Reason Code；Reassoc/Assoc Response 則帶 Status Code',
+      'Status Code 17：AP 已達上限，無法再接受新的 STA'
+    ],
+    questions: [
+      {
+        q: 'Reassociation Request 與 Association Request 最大的差別？',
+        options: [
+          '前者沒有 Capability Info',
+          '前者含 Current AP Address 欄位',
+          '前者不需要 SSID',
+          '前者只能在 IBSS 使用'
+        ],
+        answer: 1,
+        explain: 'Reassoc Request 額外帶「當前 AP」的 MAC 位址，讓新 AP 可與舊 AP 協調或通知。'
+      },
+      {
+        q: '如果 AP 緩衝已滿、無法再為新 STA 提供服務，Association Response 可能回傳的 Status Code 是？',
+        options: ['0 (Success)', '17 (AP 無法再接受更多 STA)', '13 (演算法不支援)', '1 (Unspecified failure)'],
+        answer: 1,
+        explain: 'Status Code 17：Association denied because AP is unable to handle additional associated stations。'
+      },
+      {
+        q: 'Disassociation 與 Deauthentication 的差別？',
+        options: [
+          '前者只解除連結仍保留認證；後者連認證一起解除',
+          '前者屬於控制訊框；後者屬於資料訊框',
+          '兩者完全相同，只是名稱不同',
+          '前者只能由 STA 發出；後者只能由 AP 發出'
+        ],
+        answer: 0,
+        explain: 'Disassoc 只讓狀態從 3 退到 2（保留認證）；Deauth 則直接退到 State 1。'
+      }
+    ]
+  },
+  {
+    title: 'NAV 與 RTS/CTS（隱藏節點解法）',
+    intro: `想像兩個 STA 距離太遠，<strong>彼此聽不到對方的電波</strong>，但它們都在 AP 的通訊範圍內——這就是典型的<strong>隱藏節點（Hidden Node）</strong>。兩個 STA 會以為空中沒人而同時發送，訊號在 AP 處撞在一起。為了解決這個「聽不到」的難題，802.11 設計了 <strong>RTS/CTS</strong>：透過 AP 回的 CTS 讓所有可能干擾的站都更新自己的 <strong>NAV</strong>（虛擬載波偵測），在指定時間內閉嘴不發送。`,
+    diagram: `
+<svg viewBox="0 0 820 380" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:820px">
+  <defs>
+    <marker id="arrNav" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a855f7"/>
+    </marker>
+    <marker id="arrCts" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#22d3ee"/>
+    </marker>
+  </defs>
+  <g font-family="system-ui, sans-serif" fill="#fff">
+    <!-- STA A range -->
+    <circle cx="170" cy="200" r="150" fill="rgba(139,92,246,0.12)" stroke="#a855f7" stroke-dasharray="4 4"/>
+    <text x="170" y="70" text-anchor="middle" font-size="11" fill="#c4b5fd">STA A 訊號範圍</text>
+    <!-- STA C range -->
+    <circle cx="620" cy="200" r="150" fill="rgba(34,211,238,0.12)" stroke="#22d3ee" stroke-dasharray="4 4"/>
+    <text x="620" y="70" text-anchor="middle" font-size="11" fill="#a5f3fc">STA C 訊號範圍</text>
+
+    <!-- STA A -->
+    <circle cx="170" cy="200" r="20" fill="#4f46e5" stroke="#a855f7" stroke-width="2"/>
+    <text x="170" y="204" text-anchor="middle" font-size="11">STA A</text>
+    <text x="170" y="235" text-anchor="middle" font-size="10" fill="#c4b5fd">（傳送方）</text>
+
+    <!-- AP in middle -->
+    <rect x="370" y="180" width="60" height="42" rx="6" fill="#4c1d95" stroke="#a855f7" stroke-width="2"/>
+    <text x="400" y="206" text-anchor="middle" font-size="12" fill="#e0e7ff">AP</text>
+    <text x="400" y="242" text-anchor="middle" font-size="10" fill="#c4b5fd">（接收方）</text>
+
+    <!-- STA C -->
+    <circle cx="620" cy="200" r="20" fill="#4f46e5" stroke="#22d3ee" stroke-width="2"/>
+    <text x="620" y="204" text-anchor="middle" font-size="11">STA C</text>
+    <text x="620" y="235" text-anchor="middle" font-size="10" fill="#a5f3fc">（隱藏節點）</text>
+
+    <!-- Hidden relationship: A and C can't hear each other -->
+    <line x1="195" y1="180" x2="595" y2="180" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="6 4"/>
+    <text x="400" y="172" text-anchor="middle" font-size="11" fill="#fca5a5">✗ 彼此聽不到對方</text>
+
+    <!-- Step 1: RTS A->AP -->
+    <line x1="195" y1="200" x2="365" y2="200" stroke="#a855f7" stroke-width="2" marker-end="url(#arrNav)"/>
+    <text x="280" y="196" text-anchor="middle" font-size="11" fill="#c4b5fd">① RTS (Duration)</text>
+
+    <!-- Step 2: CTS AP -> all -->
+    <line x1="370" y1="215" x2="195" y2="215" stroke="#22d3ee" stroke-width="2" marker-end="url(#arrCts)"/>
+    <line x1="430" y1="215" x2="605" y2="215" stroke="#22d3ee" stroke-width="2" marker-end="url(#arrCts)"/>
+    <text x="280" y="260" text-anchor="middle" font-size="11" fill="#a5f3fc">② CTS</text>
+    <text x="520" y="260" text-anchor="middle" font-size="11" fill="#a5f3fc">② CTS（STA C 也聽到！）</text>
+
+    <!-- NAV on STA C -->
+    <rect x="560" y="280" width="120" height="60" rx="6" fill="rgba(251,191,36,0.15)" stroke="#fbbf24"/>
+    <text x="620" y="300" text-anchor="middle" font-size="11" fill="#fde047">🔕 更新 NAV</text>
+    <text x="620" y="318" text-anchor="middle" font-size="10" fill="#fef3c7">在 Duration μs 內</text>
+    <text x="620" y="332" text-anchor="middle" font-size="10" fill="#fef3c7">不發送 → 不會撞</text>
+  </g>
+</svg>`,
+    diagramCaption: '隱藏節點情境：A 與 C 互相聽不到，但 AP 的 CTS 兩邊都收得到 → C 更新 NAV 避讓',
+    content: `
+      <p>RTS/CTS 是解決<strong>隱藏節點問題</strong>的機制。先了解兩個概念：</p>
+      <ul>
+        <li><strong>實體載波偵測（Physical CS）：</strong> 用無線電量測「空中有沒有人在講話」。隱藏節點的 STA C 聽不到 A，實體偵測會誤判為「空閒」。</li>
+        <li><strong>虛擬載波偵測（Virtual CS / NAV）：</strong> 每個 STA 內部維護一個倒數的計時器 NAV（Network Allocation Vector）。只要 NAV &gt; 0，就算實體偵測說空閒也<strong>一律視為忙碌</strong>，不得發送。</li>
+      </ul>
+      <p>RTS/CTS 流程：</p>
+      <ol>
+        <li>傳送端 A 先送 <strong>RTS</strong>（Request To Send），Duration 欄位宣告「整個交易（CTS + Data + ACK）預計佔用媒介多久」。</li>
+        <li>接收端（AP）回 <strong>CTS</strong>（Clear To Send），同樣帶 Duration。</li>
+        <li>所有聽得到 RTS <strong>或</strong> CTS 的 STA，把自己的 NAV 設為該 Duration 值並倒數。</li>
+        <li>這段時間內它們完全不發送 → 即使聽不到 A（如 STA C），也因為聽到 AP 的 CTS 而安靜。</li>
+        <li>A 與 AP 完成 Data → ACK 交換。</li>
+      </ol>
+      <p><strong>為什麼 CTS 是關鍵：</strong> RTS 只解決傳送端這一側的鄰居；而 CTS 從 AP 發出，<strong>AP 通訊範圍內的所有 STA</strong>（包含「隱藏」的 STA C）都聽得到 → 這才是真正關閉隱藏節點衝突的那一步。</p>
+      <p><strong>小細節：</strong> RTS/CTS 會浪費頻寬，所以通常只對<strong>大於 RTS Threshold</strong> 的訊框才啟用。</p>
+    `,
+    keyPoints: [
+      'NAV 單位是 μs，存於 Duration/ID 欄位，採倒數計時',
+      '隱藏節點問題靠「聽到 CTS 的人安靜」來解決，CTS 才是主角',
+      '只要 NAV &gt; 0，就算實體偵測空閒也視為忙碌',
+      'RTS/CTS 對短訊框不划算，由 RTS Threshold 控制是否啟用'
+    ],
+    questions: [
+      {
+        q: 'NAV 的單位是？',
+        options: ['位元組', 'Beacon 個數', '微秒 (μs)', 'Bytes/s'],
+        answer: 2,
+        explain: 'NAV 存放於 Duration/ID 欄位，以微秒（μs）為單位。'
+      },
+      {
+        q: 'RTS/CTS 主要解決什麼問題？',
+        options: ['訊號衰減', '加密強度不足', '隱藏節點衝突', '省電喚醒'],
+        answer: 2,
+        explain: 'RTS/CTS 讓所有可能衝突的 STA（即使聽不到原送方）都能透過 CTS 得知媒介正在被使用，更新 NAV 避免衝突。'
+      },
+      {
+        q: '在 RTS/CTS 中，讓「隱藏節點」真正閉嘴的關鍵訊框是？',
+        options: ['RTS', 'CTS', 'ACK', 'Beacon'],
+        answer: 1,
+        explain: 'CTS 由 AP 發出，AP 範圍內所有 STA（包含隱藏節點）都能聽到並更新 NAV，這才是關鍵。'
+      },
+      {
+        q: '當 NAV > 0 時，STA 應該？',
+        options: ['忽略並嘗試發送', '視媒介為忙碌，不發送', '只能發送 ACK', '重新加入 BSS'],
+        answer: 1,
+        explain: '只要 NAV 還在倒數就代表虛擬載波偵測為忙碌，STA 必須等到 NAV=0 才能再考慮發送。'
+      }
+    ]
+  }
+];
+
+// ==================== 資料：綜合測驗 ====================
+const quizBank = [
+  {q:'MPDU 與 MSDU 的差異？', options:['沒有差別', 'MSDU 是 MAC 層對外服務的資料單元，可能被切成多個 MPDU', 'MPDU 是應用層資料', 'MSDU 僅用於 WEP'], answer:1, explain:'MSDU 是上層交給 MAC 的資料，過大時會切成多個 MPDU（片段）傳送。'},
+  {q:'BSSID 在 Infrastructure 模式中通常是什麼？', options:['AP 的 IP 位址', 'AP 的 MAC 位址', 'STA 的 MAC', '一個隨機數'], answer:1, explain:'Infrastructure BSS 的 BSSID 就是 AP 的 MAC 位址；IBSS 才是隨機產生。'},
+  {q:'下列何者是管理訊框？', options:['ACK', 'RTS', 'Beacon', 'CF-End'], answer:2, explain:'Beacon 是管理訊框；ACK/RTS/CF-End 是控制訊框。'},
+  {q:'AID 的範圍是？', options:['0–255', '1–2007', '0–4095', '任意 48 位元值'], answer:1, explain:'AP 為 STA 分配的 AID 範圍 1–2007。'},
+  {q:'Frame Control 中哪個位元代表「這個訊框有被 WEP 加密」？', options:['Retry', 'Protected Frame', 'Pwr Mgt', 'Order'], answer:1, explain:'Protected Frame（舊稱 WEP bit）= 1 表示 Frame Body 已加密。'},
+  {q:'主動掃描中，STA 發送哪個訊框？', options:['Beacon', 'Probe Request', 'Association Request', 'Authentication'], answer:1, explain:'主動掃描由 STA 送 Probe Request，AP 回 Probe Response。'},
+  {q:'Deauthentication 的目的是？', options:['加密升級', '解除整個認證關係', '省電', '錯誤偵測'], answer:1, explain:'Deauth 終止認證（連帶連結失效）；Disassoc 只解除連結但保留認證。'},
+  {q:'STA 傳送訊框到網際網路，經過 AP，哪一個組合正確？', options:['To DS=0, From DS=0', 'To DS=0, From DS=1', 'To DS=1, From DS=0', 'To DS=1, From DS=1'], answer:2, explain:'STA → AP 方向：To DS=1（要進 DS）、From DS=0。'},
+  {q:'Sequence Control 欄位中 Sequence Number 有多少位元？', options:['4', '8', '12', '16'], answer:2, explain:'Sequence Control 共 16 bits：4 bit Fragment Number + 12 bit Sequence Number。'},
+  {q:'State 2（已認證但未連結）時，STA 可以做什麼？', options:['傳 Data', '傳 Association Request', '什麼都不行', '只能關機'], answer:1, explain:'State 2 允許 Class 1 + 2 訊框，其中包含 Association Request。'},
+  {q:'Status Code = 0 代表？', options:['連結失敗', '未指定錯誤', '成功', '不支援的演算法'], answer:2, explain:'在 Auth/Assoc/Reassoc Response 中，Status Code 0 代表成功。'},
+  {q:'下列何者屬於 Beacon 內的 Information Element？', options:['FCS', 'TIM', 'Sequence Control', 'Address 4'], answer:1, explain:'TIM（Traffic Indication Map）是 Beacon 中用於省電指示的 IE。'},
+  {q:'Listen Interval 出現在哪個訊框？', options:['Probe Request', 'Association Request', 'ACK', 'Beacon'], answer:1, explain:'STA 在 Association Request 中用 Listen Interval 告知 AP 自己最久多久會醒來一次。'},
+  {q:'省電中的 STA 如何向 AP 索取被緩衝的單播訊框？', options:['送 Probe Request', '送 PS-Poll', '送 Disassoc', '送 ATIM'], answer:1, explain:'PS-Poll 是省電 STA 取回緩衝訊框的控制訊框，Duration/ID 填 AID。'},
+  {q:'1 TU 等於多少微秒？', options:['1000', '1024', '512', '100'], answer:1, explain:'1 TU = 1024 μs，Beacon Interval 多為 100 TU ≈ 102.4 ms。'},
+  {q:'下列哪個訊框「不」屬於 Class 1（任何狀態都能收送）？', options:['Beacon', 'Probe Request', 'Authentication', 'Data'], answer:3, explain:'Data 是 Class 3，必須 State 3 才能使用。'},
+  {q:'IBSS 的 BSSID 如何產生？', options:['由發起 STA 隨機產生本地管理 MAC', '由 AP 指派', '使用 SSID 的 hash', '固定值 0xFFFFFFFFFFFF'], answer:0, explain:'IBSS 沒有 AP，由最初建立 IBSS 的 STA 隨機產生一個本地管理位址當 BSSID。'},
+  {q:'Shared Key Authentication 第 3 步驟，STA 送出的是？', options:['明文 Challenge', '用 WEP 金鑰加密後的 Challenge', '自己的 MAC', 'Probe Response'], answer:1, explain:'第 3 步 STA 要用共享 WEP 金鑰加密 AP 給的 Challenge Text，送回 AP 驗證。'},
+  {q:'WDS 模式需要幾個位址欄位？', options:['1', '2', '3', '4'], answer:3, explain:'WDS（AP 間無線橋接）同時有 RA/TA/DA/SA 四個不同裝置，需要 4 個位址。'},
+  {q:'下列何者描述最符合「漫遊（Roaming）」？', options:['STA 關機再開機', 'STA 在同一 ESS 內切換到訊號更強的 AP', 'STA 切換到不同頻率', 'AP 重新啟動'], answer:1, explain:'Roaming/Handoff 是 STA 在同一 ESS 的 AP 間切換，透過 Reassociation 達成。'}
+];
+
+// ==================== 永久記憶（localStorage） ====================
+const LS_KEY = 'wlan_ch03_study_v1';
+function loadState(){
+  try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; }
+  catch(e){ return {}; }
+}
+function saveState(){
+  try { localStorage.setItem(LS_KEY, JSON.stringify(memory)); }
+  catch(e){ /* 隱私模式或 artifact 環境可能不支援 */ }
+}
+const memory = loadState();
+memory.qResults = memory.qResults || {};       // { "cIdx-qIdx": {chose, correct, ts} }
+memory.quizHistory = memory.quizHistory || []; // [{date, score, total, pct, rank}, ...]
+memory.lastCard = memory.lastCard || {filter:'全部', index:0};
+memory.lastSection = memory.lastSection || 'home';
+
+function resetMemory(){
+  if(!confirm('確定要清除所有進度紀錄嗎？（包含概念題對錯、測驗紀錄、閱讀位置）')) return;
+  memory.qResults = {};
+  memory.quizHistory = [];
+  memory.lastCard = {filter:'全部', index:0};
+  memory.lastSection = 'home';
+  saveState();
+  location.reload();
+}
+
+function showToast(msg){
+  let t = document.querySelector('.restore-toast');
+  if(!t){
+    t = document.createElement('div');
+    t.className = 'restore-toast';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  setTimeout(()=>t.classList.add('show'), 50);
+  setTimeout(()=>t.classList.remove('show'), 3500);
+}
+
+// ==================== 狀態 ====================
+let termIndex = 0;
+let filteredTerms = terms.slice();
+let currentFilter = '全部';
+let viewMode = memory.viewMode || 'card';  // 'card' | 'list'
+
+// ==================== 閃卡邏輯 ====================
+function renderFilters(){
+  const cats = ['全部', ...new Set(terms.map(t=>t.cat))];
+  const el = document.getElementById('term-filters');
+  el.innerHTML = cats.map(c=>`<button class="filter-btn ${c===currentFilter?'active':''}" onclick="setFilter('${c}')">${c}</button>`).join('');
+}
+function setFilter(cat){
+  currentFilter = cat;
+  filteredTerms = cat==='全部' ? terms.slice() : terms.filter(t=>t.cat===cat);
+  termIndex = 0;
+  renderFilters();
+  if(viewMode === 'card') showCard();
+  else renderList();
+}
+
+function setViewMode(mode){
+  viewMode = mode;
+  memory.viewMode = mode;
+  saveState();
+  document.getElementById('btn-card-view').classList.toggle('active', mode === 'card');
+  document.getElementById('btn-list-view').classList.toggle('active', mode === 'list');
+  document.getElementById('card-mode').style.display = mode === 'card' ? '' : 'none';
+  document.getElementById('list-mode').style.display = mode === 'list' ? '' : 'none';
+  if(mode === 'list') renderList();
+  else showCard();
+}
+
+function renderList(){
+  const search = (document.getElementById('term-search')?.value || '').trim().toLowerCase();
+  let list = filteredTerms;
+  if(search){
+    list = list.filter(t =>
+      t.abbr.toLowerCase().includes(search) ||
+      t.cn.toLowerCase().includes(search) ||
+      t.en.toLowerCase().includes(search) ||
+      t.def.toLowerCase().includes(search)
+    );
+  }
+  document.getElementById('list-count').textContent = list.length;
+  const container = document.getElementById('term-list');
+  if(list.length === 0){
+    container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:2rem; color:var(--text-muted)">沒有符合「${search}」的術語</div>`;
+    return;
+  }
+  container.innerHTML = list.map(t => {
+    // 找出這個 term 在 terms 中的原始 index，切換回卡片模式時可以聚焦
+    const origIdx = terms.findIndex(x => x.abbr === t.abbr && x.en === t.en);
+    return `
+    <div class="term-item" onclick="jumpToCard(${origIdx})">
+      <div class="ti-head">
+        <div class="ti-abbr">${t.abbr}</div>
+        <div class="ti-cat">${t.cat}</div>
+      </div>
+      <div class="ti-en">${t.en}</div>
+      <div class="ti-cn">${t.cn}</div>
+      <div class="ti-def">${t.def}</div>
+    </div>
+  `}).join('');
+}
+
+function jumpToCard(origIdx){
+  const target = terms[origIdx];
+  if(!target) return;
+  // 找到在 filteredTerms 中的位置
+  const fIdx = filteredTerms.findIndex(x => x.abbr === target.abbr && x.en === target.en);
+  if(fIdx === -1){
+    // 若被過濾掉，先重置分類
+    currentFilter = '全部';
+    filteredTerms = terms.slice();
+    termIndex = origIdx;
+    renderFilters();
+  } else {
+    termIndex = fIdx;
+  }
+  setViewMode('card');
+}
+
+function persistCardPos(){
+  memory.lastCard = {filter: currentFilter, index: termIndex};
+  saveState();
+}
+function showCard(){
+  const t = filteredTerms[termIndex];
+  if(!t) return;
+  const card = document.getElementById('flashcard');
+  card.classList.remove('flipped');
+  document.getElementById('card-abbr').textContent = t.abbr;
+  document.getElementById('card-term-cn').textContent = t.cn;
+  document.getElementById('card-badge').textContent = t.cat;
+  document.getElementById('card-english').textContent = t.en;
+  document.getElementById('card-chinese').textContent = t.cn;
+  document.getElementById('card-definition').textContent = t.def;
+  document.getElementById('term-current').textContent = termIndex+1;
+  document.getElementById('term-total').textContent = filteredTerms.length;
+  document.getElementById('total-count').textContent = terms.length;
+  const pct = ((termIndex+1)/filteredTerms.length)*100;
+  document.getElementById('term-progress').style.width = pct + '%';
+  persistCardPos();
+}
+function flipCard(){ document.getElementById('flashcard').classList.toggle('flipped'); }
+function nextCard(){ termIndex = (termIndex+1) % filteredTerms.length; showCard(); }
+function prevCard(){ termIndex = (termIndex-1+filteredTerms.length) % filteredTerms.length; showCard(); }
+function shuffleCards(){
+  for(let i=filteredTerms.length-1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [filteredTerms[i], filteredTerms[j]] = [filteredTerms[j], filteredTerms[i]];
+  }
+  termIndex = 0;
+  showCard();
+}
+
+// ==================== 概念 + 題目 ====================
+function renderConcepts(){
+  const container = document.getElementById('concepts-list');
+  // 統計摘要
+  const totalQs = concepts.reduce((s, c) => s + c.questions.length, 0);
+  const answered = Object.keys(memory.qResults).length;
+  const correct = Object.values(memory.qResults).filter(r => r.correct).length;
+  const summary = answered > 0
+    ? `<div class="intro-text" style="margin-bottom:1.5rem"><strong>你的修煉紀錄：</strong> 已作答 ${answered} / ${totalQs} 題，答對 ${correct} 題（${Math.round(correct/answered*100)}%）<button class="btn" style="margin-left:1rem; font-size:0.8rem; padding:0.3rem 0.8rem" onclick="resetMemory()">🗑 清除紀錄</button></div>`
+    : '';
+
+  container.innerHTML = summary + concepts.map((c, idx) => `
+    <div class="concept-block summon-in">
+      <div class="concept-header">
+        <span class="concept-number">${idx+1}</span>
+        <span class="concept-title">${c.title}</span>
+      </div>
+      ${c.intro ? `<div class="lesson-intro"><span class="intro-label">✦ 為什麼要懂這個</span><br>${c.intro}</div>` : ''}
+      ${c.diagram ? `<div class="diagram">${c.diagram}${c.diagramCaption ? `<div class="diagram-caption">${c.diagramCaption}</div>` : ''}</div>` : ''}
+      <div class="concept-content">${c.content}</div>
+      ${c.keyPoints ? `<div class="key-points"><h4>⚡ 重點回憶</h4><ul>${c.keyPoints.map(p => `<li>${p}</li>`).join('')}</ul></div>` : ''}
+      ${c.questions.map((q, qi) => {
+        const saved = memory.qResults[`${idx}-${qi}`];
+        const badge = saved
+          ? `<span class="q-badge ${saved.correct?'correct':'wrong'}">${saved.correct?'✓ 曾答對':'✗ 曾答錯'}</span>`
+          : '';
+        return `
+        <div class="question-block" id="qb-${idx}-${qi}">
+          <div class="question-text">Q${qi+1}. ${q.q}${badge}</div>
+          <div class="question-options">
+            ${q.options.map((opt, oi) => `
+              <button class="option" onclick="answerQ(this, ${idx}, ${qi}, ${oi})">${String.fromCharCode(65+oi)}. ${opt}</button>
+            `).join('')}
+          </div>
+          <div class="explain" id="explain-${idx}-${qi}"><strong>✦ 解析：</strong> ${q.explain}</div>
+          ${saved ? `<button class="btn retry-btn" onclick="retryQ(${idx},${qi})">🔁 重答</button>` : ''}
+        </div>
+      `}).join('')}
+    </div>
+  `).join('');
+
+  // 套用已儲存的答題狀態
+  Object.keys(memory.qResults).forEach(key => {
+    const [ci, qi] = key.split('-').map(Number);
+    const qb = document.getElementById(`qb-${ci}-${qi}`);
+    if(!qb) return;
+    const saved = memory.qResults[key];
+    const q = concepts[ci] && concepts[ci].questions[qi];
+    if(!q) return;
+    const options = qb.querySelectorAll('.option');
+    options.forEach((o, i) => {
+      o.disabled = true;
+      if(i === q.answer) o.classList.add('correct');
+      else if(i === saved.chose) o.classList.add('wrong');
+    });
+    const explain = document.getElementById(`explain-${ci}-${qi}`);
+    if(explain) explain.classList.add('show');
+  });
+}
+
+function answerQ(btn, cIdx, qIdx, oIdx){
+  const q = concepts[cIdx].questions[qIdx];
+  const parent = btn.parentElement;
+  const options = parent.querySelectorAll('.option');
+  options.forEach((o, i) => {
+    o.disabled = true;
+    if(i === q.answer) o.classList.add('correct');
+    else if(i === oIdx) o.classList.add('wrong');
+  });
+  document.getElementById(`explain-${cIdx}-${qIdx}`).classList.add('show');
+  // 儲存到記憶
+  memory.qResults[`${cIdx}-${qIdx}`] = {
+    chose: oIdx,
+    correct: oIdx === q.answer,
+    ts: Date.now()
+  };
+  saveState();
+  // 更新徽章（重新 render 這個題目區塊即可，或直接插入）
+  const qb = document.getElementById(`qb-${cIdx}-${qIdx}`);
+  const qText = qb.querySelector('.question-text');
+  if(qText && !qText.querySelector('.q-badge')){
+    const badge = document.createElement('span');
+    badge.className = 'q-badge ' + (oIdx === q.answer ? 'correct' : 'wrong');
+    badge.textContent = oIdx === q.answer ? '✓ 曾答對' : '✗ 曾答錯';
+    qText.appendChild(badge);
+  }
+  // 加上重答按鈕
+  if(!qb.querySelector('.retry-btn')){
+    const retry = document.createElement('button');
+    retry.className = 'btn retry-btn';
+    retry.textContent = '🔁 重答';
+    retry.onclick = () => retryQ(cIdx, qIdx);
+    qb.appendChild(retry);
+  }
+}
+
+function retryQ(cIdx, qIdx){
+  delete memory.qResults[`${cIdx}-${qIdx}`];
+  saveState();
+  renderConcepts();
+  // 捲回題目位置
+  setTimeout(() => {
+    const el = document.getElementById(`qb-${cIdx}-${qIdx}`);
+    if(el) el.scrollIntoView({behavior:'smooth', block:'center'});
+  }, 80);
+}
+
+// ==================== 綜合測驗 ====================
+let quizState = null;
+
+function rankClass(r){
+  return 'rank-' + (r === 'S' || r === 'A' || r === 'B' || r === 'C' ? r : 'E');
+}
+
+function showQuizStart(){
+  const h = memory.quizHistory || [];
+  const recent = h.slice().reverse().slice(0, 10);
+  const best = h.length ? h.reduce((a,b) => a.pct >= b.pct ? a : b) : null;
+  const historyHtml = h.length > 0 ? `
+    <div style="margin-top:2rem; text-align:left">
+      <h4 style="color:var(--violet-bright); letter-spacing:0.15em; margin-bottom:0.8rem">📜 試煉紀錄</h4>
+      <div style="background:rgba(5,3,13,0.6); border:1px solid rgba(139,92,246,0.3); border-radius:8px; padding:0.5rem 1rem; margin-bottom:0.8rem">
+        <div style="padding:0.6rem 0; border-bottom:1px solid rgba(139,92,246,0.2); font-size:0.9rem">
+          <span style="color:var(--text-muted)">總挑戰次數：</span>
+          <strong style="color:var(--shadow-cyan)">${h.length}</strong>
+          ${best ? ` ｜ <span style="color:var(--text-muted)">最佳：</span><strong style="color:var(--gold)">${best.pct}% (${best.rank} 級)</strong>` : ''}
+        </div>
+        ${recent.map(x => `
+          <div class="history-item">
+            <span class="history-date">${new Date(x.date).toLocaleString('zh-TW', {month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit'})}</span>
+            <span class="history-score">${x.score}/${x.total} · ${x.pct}%</span>
+            <span class="history-rank ${rankClass(x.rank)}">${x.rank}</span>
+          </div>
+        `).join('')}
+      </div>
+      <div style="text-align:center">
+        <button class="btn" style="font-size:0.85rem; padding:0.4rem 0.9rem" onclick="clearQuizHistory()">🗑 清除試煉紀錄</button>
+      </div>
+    </div>
+  ` : '';
+
+  document.getElementById('quiz-panel').innerHTML = `
+    <div class="quiz-start">
+      <p style="font-size:1.1rem; margin-bottom:1.5rem; line-height:1.8">
+        獵人，準備好接受 <strong style="color:var(--violet-bright)">影之試煉</strong> 了嗎？<br>
+        你將面對 <strong style="color:var(--shadow-cyan)">15 道</strong> 隨機抽取的試題。
+      </p>
+      <button class="btn btn-primary" onclick="startQuiz()">⚔ 開始試煉</button>
+    </div>
+    ${historyHtml}
+  `;
+}
+
+function clearQuizHistory(){
+  if(!confirm('確定要清除試煉紀錄嗎？（概念題與閃卡進度不會被清除）')) return;
+  memory.quizHistory = [];
+  saveState();
+  showQuizStart();
+}
+
+function startQuiz(){
+  const pool = quizBank.slice();
+  for(let i=pool.length-1; i>0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  quizState = {
+    questions: pool.slice(0, 15),
+    current: 0,
+    score: 0,
+    answers: []
+  };
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion(){
+  const s = quizState;
+  if(s.current >= s.questions.length){
+    renderQuizResult();
+    return;
+  }
+  const q = s.questions[s.current];
+  const panel = document.getElementById('quiz-panel');
+  panel.innerHTML = `
+    <div class="quiz-question-num">第 ${s.current+1} / ${s.questions.length} 題 ✦ 當前分數 ${s.score}</div>
+    <div class="progress-bar" style="margin-bottom:1.5rem"><div class="progress-fill" style="width:${(s.current/s.questions.length)*100}%"></div></div>
+    <div class="quiz-question">${q.q}</div>
+    <div class="question-options">
+      ${q.options.map((opt, i) => `
+        <button class="option" onclick="answerQuiz(${i})">${String.fromCharCode(65+i)}. ${opt}</button>
+      `).join('')}
+    </div>
+    <div class="explain" id="quiz-explain"><strong>✦ 解析：</strong> ${q.explain}</div>
+    <div id="quiz-next" style="text-align:right; margin-top:1rem; display:none">
+      <button class="btn btn-primary" onclick="nextQuiz()">${s.current+1 >= s.questions.length ? '查看結果 ▶' : '下一題 ▶'}</button>
+    </div>
+  `;
+}
+
+function answerQuiz(oIdx){
+  const s = quizState;
+  const q = s.questions[s.current];
+  const panel = document.getElementById('quiz-panel');
+  const options = panel.querySelectorAll('.option');
+  options.forEach((o, i) => {
+    o.disabled = true;
+    if(i === q.answer) o.classList.add('correct');
+    else if(i === oIdx) o.classList.add('wrong');
+  });
+  const correct = oIdx === q.answer;
+  if(correct) s.score++;
+  s.answers.push({q: q.q, chose: oIdx, correct});
+  document.getElementById('quiz-explain').classList.add('show');
+  document.getElementById('quiz-next').style.display = 'block';
+}
+
+function nextQuiz(){
+  quizState.current++;
+  renderQuizQuestion();
+}
+
+function renderQuizResult(){
+  const s = quizState;
+  const pct = Math.round((s.score / s.questions.length) * 100);
+  let rank, msg, cls;
+  if(pct >= 95){ rank='S'; msg='影王等級！你的影之軍團無人能敵。'; cls='rank-S'; }
+  else if(pct >= 85){ rank='A'; msg='頂級獵人。考試穩穩通過。'; cls='rank-A'; }
+  else if(pct >= 70){ rank='B'; msg='進階獵人。再多修煉幾次可達頂峰。'; cls='rank-B'; }
+  else if(pct >= 50){ rank='C'; msg='中級獵人。建議回頭看看「核心修煉」。'; cls='rank-C'; }
+  else { rank='E'; msg='新手獵人。回到「影之典籍」多背誦術語吧。'; cls='rank-E'; }
+
+  // 儲存到歷史紀錄
+  memory.quizHistory.push({
+    date: new Date().toISOString(),
+    score: s.score,
+    total: s.questions.length,
+    pct: pct,
+    rank: rank
+  });
+  if(memory.quizHistory.length > 100) memory.quizHistory = memory.quizHistory.slice(-100);
+  saveState();
+
+  // 判斷是否為個人最佳
+  const best = memory.quizHistory.reduce((a,b) => a.pct >= b.pct ? a : b);
+  const isNewBest = memory.quizHistory.length >= 2 && best.date === memory.quizHistory[memory.quizHistory.length-1].date && memory.quizHistory.slice(0, -1).every(x => x.pct < pct);
+  const totalRuns = memory.quizHistory.length;
+
+  document.getElementById('quiz-panel').innerHTML = `
+    <h3 style="color:var(--violet-bright); text-align:center; letter-spacing:0.2em; margin-bottom:1rem">試煉結果</h3>
+    <div style="text-align:center">
+      <div class="quiz-score-display">${s.score} / ${s.questions.length}</div>
+      <div style="color:var(--text-muted); margin-bottom:1rem">答對率 ${pct}% ｜ 第 ${totalRuns} 次試煉</div>
+      <div class="rank-badge ${cls}">${rank} 級獵人</div>
+      ${isNewBest ? `<div style="margin-top:0.8rem; color:var(--gold); letter-spacing:0.2em; animation:summon 0.8s ease">✦ 新紀錄！個人最佳 ✦</div>` : ''}
+      <p style="margin:1.5rem 0; line-height:1.8">${msg}</p>
+      <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap">
+        <button class="btn btn-primary" onclick="startQuiz()">🔁 再次挑戰</button>
+        <button class="btn" onclick="showQuizStart()">📜 查看紀錄</button>
+        <button class="btn" onclick="showSection('concepts')">回到修煉</button>
+      </div>
+    </div>
+    <details style="margin-top:2rem">
+      <summary style="cursor:pointer; color:var(--shadow-cyan); letter-spacing:0.1em">📜 查看每題結果</summary>
+      <div style="margin-top:1rem">
+        ${s.answers.map((a, i) => `
+          <div style="padding:0.6rem; border-bottom:1px solid rgba(139,92,246,0.2); font-size:0.9rem">
+            <span style="color:${a.correct?'#86efac':'#fca5a5'}; margin-right:0.5rem">${a.correct?'✓':'✗'}</span>
+            第 ${i+1} 題：${a.q}
+          </div>
+        `).join('')}
+      </div>
+    </details>
+  `;
+}
+
+// ==================== 概念地圖 ====================
+const mapNodes = [
+  {id:'ch03', x:500, y:50, label:'CH03 訊框與連結', type:'root', info:'802.11 第三章主題：MAC 訊框格式與 STA 如何連上 AP。'},
+  {id:'frame', x:220, y:170, label:'MAC 訊框格式', type:'major', info:'包含 Frame Control、Duration、位址、Sequence、Frame Body、FCS。'},
+  {id:'assoc', x:780, y:170, label:'連結上網', type:'major', info:'Scanning → Authentication → Association 三階段。'},
+  {id:'fc', x:90, y:300, label:'Frame Control', type:'sub', info:'16 bits：ProtocolVer、Type、SubType、To/From DS、More Frag、Retry、Pwr Mgt、More Data、Protected、Order。'},
+  {id:'addr', x:230, y:370, label:'位址欄位', type:'sub', info:'1–4 個 6-byte 位址。依 To/From DS 對應 DA/SA/BSSID/RA/TA。'},
+  {id:'seq', x:380, y:300, label:'Sequence Control', type:'sub', info:'4-bit Fragment + 12-bit Sequence。用於分片與去重。'},
+  {id:'types', x:130, y:460, label:'三大訊框類型', type:'sub', info:'Management / Control / Data（Type=00/01/10）。'},
+  {id:'mgmt', x:320, y:560, label:'Management', type:'leaf', info:'Beacon、Probe、Auth、Assoc、Disassoc、Deauth、ATIM。'},
+  {id:'ctrl', x:180, y:620, label:'Control', type:'leaf', info:'RTS、CTS、ACK、PS-Poll、CF-End。'},
+  {id:'data', x:40, y:560, label:'Data', type:'leaf', info:'資料訊框，承載 MSDU。僅在 State 3 可用。'},
+  {id:'scan', x:650, y:300, label:'Scanning', type:'sub', info:'Passive（聽 Beacon，省電但慢）/ Active（送 Probe Req，快但耗電）。'},
+  {id:'auth', x:800, y:300, label:'Authentication', type:'sub', info:'Open System (2 步) 或 Shared Key (4 步，用 WEP)。'},
+  {id:'association', x:950, y:300, label:'Association', type:'sub', info:'STA 發 Assoc Req，AP 回 Assoc Resp 並分配 AID。'},
+  {id:'state', x:650, y:450, label:'狀態機', type:'sub', info:'State 1 未認證 / State 2 已認證未連結 / State 3 已認證已連結。'},
+  {id:'ps', x:800, y:450, label:'省電機制', type:'sub', info:'STA 睡覺 → AP 緩衝 → Beacon 的 TIM 指示 → STA 送 PS-Poll 取回。'},
+  {id:'roam', x:950, y:450, label:'漫遊 Roaming', type:'sub', info:'STA 在 ESS 內切換 AP，用 Reassociation（含 Current AP Address）。'},
+  {id:'beacon', x:550, y:580, label:'Beacon', type:'leaf', info:'AP 每 100 TU 廣播，含 Timestamp、Capability、SSID、TIM 等。'},
+  {id:'tim', x:700, y:620, label:'TIM / AID', type:'leaf', info:'TIM 位圖用 AID 索引，通知誰有訊框被緩衝。'},
+  {id:'ps-poll', x:870, y:600, label:'PS-Poll', type:'leaf', info:'省電 STA 甦醒後向 AP 取回緩衝訊框。Duration/ID 放 AID。'}
+];
+
+const mapEdges = [
+  ['ch03','frame'], ['ch03','assoc'],
+  ['frame','fc'], ['frame','addr'], ['frame','seq'], ['frame','types'],
+  ['types','mgmt'], ['types','ctrl'], ['types','data'],
+  ['assoc','scan'], ['assoc','auth'], ['assoc','association'],
+  ['assoc','state'], ['assoc','ps'], ['assoc','roam'],
+  ['scan','beacon'], ['ps','tim'], ['ps','ps-poll'], ['tim','ps-poll'],
+  ['mgmt','beacon']
+];
+
+function renderMap(){
+  const svg = document.getElementById('concept-map');
+  const nodeMap = Object.fromEntries(mapNodes.map(n=>[n.id, n]));
+  let html = `
+    <defs>
+      <radialGradient id="rootGrad"><stop offset="0%" stop-color="#fde047"/><stop offset="100%" stop-color="#a855f7"/></radialGradient>
+      <radialGradient id="majorGrad"><stop offset="0%" stop-color="#a855f7"/><stop offset="100%" stop-color="#6d28d9"/></radialGradient>
+      <radialGradient id="subGrad"><stop offset="0%" stop-color="#22d3ee"/><stop offset="100%" stop-color="#4f46e5"/></radialGradient>
+      <radialGradient id="leafGrad"><stop offset="0%" stop-color="#c4b5fd"/><stop offset="100%" stop-color="#7c3aed"/></radialGradient>
+      <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+  `;
+  // edges
+  mapEdges.forEach(([a,b]) => {
+    const A = nodeMap[a], B = nodeMap[b];
+    html += `<line x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" stroke="rgba(139,92,246,0.5)" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+  });
+  // nodes
+  mapNodes.forEach(n => {
+    const size = n.type==='root'?42 : n.type==='major'?36 : n.type==='sub'?28 : 22;
+    const grad = n.type==='root'?'rootGrad' : n.type==='major'?'majorGrad' : n.type==='sub'?'subGrad' : 'leafGrad';
+    const fs = n.type==='root'?15 : n.type==='major'?13 : 11;
+    html += `
+      <g class="map-node" onclick="showNodeInfo('${n.id}')">
+        <circle cx="${n.x}" cy="${n.y}" r="${size}" fill="url(#${grad})" opacity="0.9" filter="url(#glow)"/>
+        <circle cx="${n.x}" cy="${n.y}" r="${size}" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+        <text x="${n.x}" y="${n.y+4}" text-anchor="middle" font-size="${fs}" fill="#fff" font-weight="600" style="pointer-events:none; letter-spacing:0.05em">${n.label}</text>
+      </g>
+    `;
+  });
+  svg.innerHTML = html;
+}
+
+function showNodeInfo(id){
+  const n = mapNodes.find(x=>x.id===id);
+  const box = document.getElementById('node-info');
+  box.innerHTML = `<h4>${n.label}</h4><p style="line-height:1.7">${n.info}</p>`;
+  box.classList.add('show');
+  box.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+// ==================== 頁面切換 ====================
+function showSection(id){
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const navBtn = document.querySelector(`.nav-btn[data-section="${id}"]`);
+  if(navBtn) navBtn.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+  memory.lastSection = id;
+  saveState();
+  // 進入測驗頁面時：若非正在作答中，顯示開始畫面（含歷史紀錄）
+  if(id === 'quiz' && (!quizState || quizState.current >= quizState.questions.length)){
+    showQuizStart();
+  }
+}
+
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => showSection(btn.dataset.section));
+});
+
+// 鍵盤支援
+document.addEventListener('keydown', (e) => {
+  if(document.getElementById('terms').classList.contains('active')){
+    if(e.key === 'ArrowRight') nextCard();
+    else if(e.key === 'ArrowLeft') prevCard();
+    else if(e.key === ' '){ e.preventDefault(); flipCard(); }
+  }
+});
+
+// ==================== 初始化 + 恢復記憶 ====================
+// 恢復閃卡位置
+const savedCard = memory.lastCard;
+if(savedCard && savedCard.filter){
+  currentFilter = savedCard.filter;
+  filteredTerms = currentFilter === '全部' ? terms.slice() : terms.filter(t => t.cat === currentFilter);
+  if(filteredTerms.length === 0){
+    currentFilter = '全部';
+    filteredTerms = terms.slice();
+    termIndex = 0;
+  } else {
+    termIndex = Math.min(savedCard.index || 0, filteredTerms.length - 1);
+  }
+}
+
+renderFilters();
+showCard();
+renderConcepts();
+renderMap();
+showQuizStart();
+
+// 套用已儲存的檢視模式
+if(viewMode === 'list'){
+  setViewMode('list');
+}
+
+// 恢復上次所在頁面
+const hints = [];
+if(memory.lastSection && memory.lastSection !== 'home'){
+  showSection(memory.lastSection);
+  const sectionName = {
+    terms: '影之典籍',
+    concepts: '核心修煉',
+    quiz: '影子試煉',
+    map: '靈脈圖'
+  }[memory.lastSection] || '';
+  if(sectionName) hints.push(`已回到「${sectionName}」`);
+}
+if(savedCard && savedCard.index > 0 && memory.lastSection === 'terms'){
+  hints.push(`第 ${savedCard.index + 1} 張卡`);
+}
+const answeredCount = Object.keys(memory.qResults || {}).length;
+const quizCount = (memory.quizHistory || []).length;
+if(answeredCount > 0 || quizCount > 0){
+  const parts = [];
+  if(answeredCount > 0) parts.push(`${answeredCount} 題已記錄`);
+  if(quizCount > 0) parts.push(`${quizCount} 次試煉`);
+  hints.push(parts.join('、'));
+}
+if(hints.length > 0){
+  setTimeout(() => showToast('✦ 歡迎回來 ─ ' + hints.join('，')), 400);
+}
+</script>
+</body>
+</html>
